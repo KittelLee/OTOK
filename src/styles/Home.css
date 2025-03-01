@@ -1,0 +1,80 @@
+.section-first {
+  background-image: url(../assets/imgs/pastel_back.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 30px;
+}
+
+.text-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-box strong {
+  font-size: 30px;
+  text-align: center;
+}
+
+.text-box p {
+  font-size: 14px;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.kakao-btn-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.kakao-btn {
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  background-color: rgb(245, 225, 75);
+  color: rgb(55, 30, 29);
+  border-radius: 30px;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.kakao-btn:hover {
+  background-color: white;
+}
+
+.kakao-btn img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.town {
+  display: flex;
+  justify-content: center;
+}
+
+.town img {
+  width: 500px;
+  height: 400px;
+}
+
+.section-second {
+  padding: 40px 0;
+}
+
+.title-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-text h2 {
+  font-size: 32px;
+}
+
+.slideshow {
+  display: flex;
+  margin-top: 40px;
+}
