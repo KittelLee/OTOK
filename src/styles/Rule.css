@@ -1,0 +1,12 @@
+.rule-wrap {
+  flex-direction: column;
+  align-items: center;
+}
+
+.rule-box {
+  width: 100%;
+}
+
+.rule-box img {
+  max-width: 100%;
+}

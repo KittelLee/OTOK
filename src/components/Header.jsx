@@ -32,7 +32,7 @@ function Header({ user, onLogout }) {
         <nav className={`navbar ${isNavOpen ? "active" : ""}`}>
           <ul className="nav">
             <li>
-              <Link to="#" onClick={handleLinkClick}>
+              <Link to="/rule" onClick={handleLinkClick}>
                 모임회칙
               </Link>
             </li>
