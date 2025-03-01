@@ -50,6 +50,10 @@ function Home() {
           </div>
         </Marquee>
       </section>
+
+      <section className="section-third">
+        
+      </section>
     </>
   );
 }
