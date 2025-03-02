@@ -1,0 +1,22 @@
+.footer {
+  background-color: white;
+}
+
+.footer-wrap {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px;
+  align-items: center;
+}
+
+.footer-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 2;
+  align-items: flex-start;
+  align-items: center;
+}
+
+.footer-text p {
+  font-size: 18px;
+}

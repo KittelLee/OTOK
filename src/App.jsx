@@ -5,9 +5,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PropTypes from "prop-types";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Rule from "./pages/Rule";
 import Calc from "./pages/Calc";
+import Game from "./pages/Game";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import "./App.css";
@@ -67,9 +69,11 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/game" element={<Game />}></Route>
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/login" element={<Login onLogin={setUser} />}></Route>
           </Routes>
+          <Footer />
         </>
       ) : (
         <div className="desktop-message">

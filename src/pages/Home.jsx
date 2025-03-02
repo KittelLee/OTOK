@@ -7,6 +7,7 @@ import Chacha from "../assets/imgs/Chacha.png";
 import Iron from "../assets/imgs/Iron.png";
 import Mocha from "../assets/imgs/Mocha.png";
 import kakaoLogo from "../assets/icons/kakaotalk.svg";
+import somoimLogo from "../assets/imgs/somoim.webp";
 import "../styles/Home.css";
 
 function Home() {
@@ -52,7 +53,23 @@ function Home() {
       </section>
 
       <section className="section-third">
-        
+        Test
+        <br />
+        Test
+      </section>
+
+      <section className="section-fourth">
+        <div className="fourth-text-box">
+          <h1>우리 같이 소모임도 가입해 볼까요?</h1>
+          <p>지금 바로 링크를 눌러 가입을 해보세요.!</p>
+        </div>
+        <Link
+          to="https://www.somoim.co.kr/4a076d68-ee6c-11ef-8fba-0a4e841b4fad1"
+          className="somoim-btn"
+        >
+          <img src={somoimLogo} alt="소모임로고" />
+          소모임으로 이동하기
+        </Link>
       </section>
     </>
   );

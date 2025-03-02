@@ -48,6 +48,11 @@ function Header({ user, onLogout }) {
             </li>
             <li>
               <Link to="#" onClick={handleLinkClick}>
+                게임방
+              </Link>
+            </li>
+            <li>
+              <Link to="#" onClick={handleLinkClick}>
                 정모방
               </Link>
             </li>
