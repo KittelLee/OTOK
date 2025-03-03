@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -9,7 +9,9 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Rule from "./pages/Rule";
 import Calc from "./pages/Calc";
+import Gallery from "./pages/Gallery";
 import Game from "./pages/Game";
+import Meeting from "./pages/Meeting";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import "./App.css";
@@ -20,12 +22,16 @@ ProtectedRoute.propTypes = {
 
 function ProtectedRoute({ children }) {
   const isAuthenticated = !!localStorage.getItem("user");
+  const hasShownToast = useRef(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      toast.error("다시 로그인 해주세요");
-    } else {
-      toast.success("환영합니다");
+    if (!hasShownToast.current) {
+      if (!isAuthenticated) {
+        toast.error("로그인 후 이용하세요");
+      } else {
+        toast.success("환영합니다");
+      }
+      hasShownToast.current = true;
     }
   }, [isAuthenticated]);
 
@@ -69,7 +75,30 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/game" element={<Game />}></Route>
+            <Route
+              path="/gallery"
+              element={
+                <ProtectedRoute>
+                  <Gallery />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/game"
+              element={
+                <ProtectedRoute>
+                  <Game />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/meeting"
+              element={
+                <ProtectedRoute>
+                  <Meeting />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/login" element={<Login onLogin={setUser} />}></Route>
           </Routes>

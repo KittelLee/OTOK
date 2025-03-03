@@ -37,22 +37,22 @@ function Header({ user, onLogout }) {
               </Link>
             </li>
             <li>
-              <Link to="#" onClick={handleLinkClick}>
+              <Link to="/calc" onClick={handleLinkClick}>
                 정산하기
               </Link>
             </li>
             <li>
-              <Link to="#" onClick={handleLinkClick}>
+              <Link to="/gallery" onClick={handleLinkClick}>
                 갤러리
               </Link>
             </li>
             <li>
-              <Link to="#" onClick={handleLinkClick}>
+              <Link to="/game" onClick={handleLinkClick}>
                 게임방
               </Link>
             </li>
             <li>
-              <Link to="#" onClick={handleLinkClick}>
+              <Link to="/meeting" onClick={handleLinkClick}>
                 정모방
               </Link>
             </li>
