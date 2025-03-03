@@ -86,7 +86,7 @@
   flex-direction: column;
   width: 90%;
   gap: 30px;
-  background-color: lightblue;
+  background-color: rgb(190, 205, 222);
   padding: 8px;
   border-radius: 10px;
 }
@@ -110,12 +110,12 @@
 
 .bubble-left p {
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .bubble-right p {
   text-align: right;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #align-left {
