@@ -73,7 +73,7 @@
 }
 
 .title-text h1 {
-  font-size: 30px;
+  font-size: 34px;
 }
 
 .title-text h2 {
@@ -97,6 +97,7 @@
   background-color: white;
   border-radius: 10px;
   max-width: 70%;
+  line-height: 1.2;
 }
 
 .bubble-left {
@@ -109,10 +110,12 @@
 
 .bubble-left p {
   text-align: left;
+  font-size: 15px;
 }
 
 .bubble-right p {
   text-align: right;
+  font-size: 15px;
 }
 
 #align-left {
