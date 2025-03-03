@@ -45,6 +45,11 @@ function App() {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 500);
@@ -100,7 +105,10 @@ function App() {
               }
             />
             <Route path="/signUp" element={<SignUp />}></Route>
-            <Route path="/login" element={<Login onLogin={setUser} />}></Route>
+            <Route
+              path="/login"
+              element={<Login onLogin={handleLogin} />}
+            ></Route>
           </Routes>
           <Footer />
         </>
