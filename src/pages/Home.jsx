@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import town from "../assets/imgs/town.png";
 import kakaoLogo from "../assets/icons/kakaotalk.svg";
@@ -5,6 +6,29 @@ import somoimLogo from "../assets/imgs/somoim.webp";
 import "../styles/Home.css";
 
 function Home() {
+  useEffect(() => {
+    const bubbles = document.querySelectorAll(".bubble-left, .bubble-right");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            entry.target.classList.remove("hidden");
+          } else {
+            entry.target.classList.add("hidden");
+            entry.target.classList.remove("visible");
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    bubbles.forEach((bubble) => observer.observe(bubble));
+
+    return () => {
+      bubbles.forEach((bubble) => observer.unobserve(bubble));
+    };
+  }, []);
   return (
     <>
       <section className="section-first">

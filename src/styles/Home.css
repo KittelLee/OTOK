@@ -98,6 +98,15 @@
   border-radius: 10px;
   max-width: 70%;
   line-height: 1.2;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s, transform 0.5s ease-in-out;
+}
+
+.bubble-left.visible,
+.bubble-right.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .bubble-left {
