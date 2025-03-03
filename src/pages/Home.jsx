@@ -1,11 +1,5 @@
 import { Link } from "react-router-dom";
-import Marquee from "react-fast-marquee";
-import ProfileCircle from "../common/ProfileCircle";
 import town from "../assets/imgs/town.png";
-import Pillow from "../assets/imgs/Pillow.png";
-import Chacha from "../assets/imgs/Chacha.png";
-import Iron from "../assets/imgs/Iron.png";
-import Mocha from "../assets/imgs/Mocha.png";
 import kakaoLogo from "../assets/icons/kakaotalk.svg";
 import somoimLogo from "../assets/imgs/somoim.webp";
 import "../styles/Home.css";
@@ -40,26 +34,73 @@ function Home() {
 
       <section className="section-second">
         <div className="title-text">
-          <h2>대표 운영진</h2>
-        </div>
-        <Marquee speed={100}>
-          <div className="slideshow">
-            <ProfileCircle src={Pillow} name="방장 베개" />
-            <ProfileCircle src={Chacha} name="1방 부방장 차차" />
-            <ProfileCircle src={Iron} name="2방 부방장 이언" />
-            <ProfileCircle src={Mocha} name="3방 부방장 모카" />
+          <h1>🎉환영합니다🎉</h1>
+          <h2>순서대로 해볼까요!</h2>
+          <div className="bubble-wrap">
+            <div className="bubble-left">
+              <p>
+                1번, 방 하트
+                <br />
+                <br />
+                우측 상단 짝대기 3개 클릭!
+                <br />
+                상단 하트 ♥️
+              </p>
+            </div>
+            <div className="bubble-right">
+              <p>
+                2번, 닉변
+                <br />
+                <br />
+                ex&#41; 아무개 97 분당 여 0102
+                <br />
+                &#40;우측상단 짝대기 3개 &gt; 본인선택 &gt; 프로필편집 &#41;
+              </p>
+            </div>
+            <div className="bubble-left">
+              <p>
+                3번, 얼공
+                <br />
+                <br />
+                입장 후 얼공 필수!! 😉
+                <br />
+                &#40; 눈,코,입 나온걸로 전신불가🚫 &#41;
+                <br />
+                얼공한장하고 이성지목 1명가능! 😏
+                <br />
+                지목당한사람도 얼공!! 😮
+                <br />
+                (방장,부방 확인 후 가리기 적용, 자삭금지!)
+              </p>
+            </div>
+            <div className="bubble-right">
+              <p>
+                4번, 자기소개
+                <br />
+                <br />
+                빨리친해질수있게 간단하게 자기소개부탁해! 😎
+                <br />
+                <br />
+                <p id="align-left">
+                  닉네임 :<br />
+                  유입경로(검색어) :<br />
+                  거주 :<br />
+                  직업 :<br />
+                  이상형 : <br />
+                  MBTI :<br />
+                  주량 :<br />
+                  흡연 :<br />
+                  취미 :<br />
+                  첫벙 예정일:
+                </p>
+              </p>
+            </div>
           </div>
-        </Marquee>
+        </div>
       </section>
 
       <section className="section-third">
-        Test
-        <br />
-        Test
-      </section>
-
-      <section className="section-fourth">
-        <div className="fourth-text-box">
+        <div className="third-text-box">
           <h1>우리 같이 소모임도 가입해 볼까요?</h1>
           <p>지금 바로 링크를 눌러 가입을 해보세요.!</p>
         </div>

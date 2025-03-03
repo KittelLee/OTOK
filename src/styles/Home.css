@@ -1,5 +1,5 @@
 .section-first,
-.section-fourth {
+.section-third {
   background-image: url(../assets/imgs/pastel_back.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -69,22 +69,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+}
+
+.title-text h1 {
+  font-size: 30px;
 }
 
 .title-text h2 {
-  font-size: 32px;
+  margin-bottom: 6px;
+  font-size: 24px;
 }
 
-.slideshow {
+.bubble-wrap {
   display: flex;
-  margin-top: 40px;
+  flex-direction: column;
+  width: 90%;
+  gap: 30px;
+  background-color: lightblue;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.bubble-left,
+.bubble-right {
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.bubble-left {
+  align-self: flex-start;
+}
+
+.bubble-right {
+  align-self: flex-end;
+}
+
+.bubble-left p {
+  text-align: left;
+}
+
+.bubble-right p {
+  text-align: right;
+}
+
+#align-left {
+  text-align: left;
 }
 
 .section-third {
-  background-color: rgb(249, 250, 250);
-}
-
-.section-fourth {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,16 +127,16 @@
   padding-bottom: 50px;
 }
 
-.fourth-text-box {
+.third-text-box {
   line-height: 1.5;
   text-align: center;
 }
 
-.fourth-text-box h1 {
+.third-text-box h1 {
   font-size: 26px;
 }
 
-.fourth-text-box p {
+.third-text-box p {
   font-size: 18px;
 }
 
