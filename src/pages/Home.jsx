@@ -44,10 +44,10 @@ function Home() {
         </div>
         <Marquee speed={100}>
           <div className="slideshow">
-            <ProfileCircle src={Pillow} name="방장 조현준(베개)" />
-            <ProfileCircle src={Chacha} name="1방 부방장 정초희(차차)" />
-            <ProfileCircle src={Iron} name="2방 부방장 정가현(이언)" />
-            <ProfileCircle src={Mocha} name="3방 부방장 이정은(모카)" />
+            <ProfileCircle src={Pillow} name="방장 베개" />
+            <ProfileCircle src={Chacha} name="1방 부방장 차차" />
+            <ProfileCircle src={Iron} name="2방 부방장 이언" />
+            <ProfileCircle src={Mocha} name="3방 부방장 모카" />
           </div>
         </Marquee>
       </section>
