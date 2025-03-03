@@ -68,7 +68,7 @@ function Home() {
           className="somoim-btn"
         >
           <img src={somoimLogo} alt="소모임로고" />
-          소모임으로 이동하기
+          소모임으로 이동
         </Link>
       </section>
     </>
