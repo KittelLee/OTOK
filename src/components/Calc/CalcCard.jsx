@@ -1,0 +1,34 @@
+import "../../styles/CalcCard.css";
+
+function CalcCard() {
+  return (
+    <>
+      <div className="card-wrap">
+        <div className="card-top">
+          <div className="card-num">
+            <p>1</p>
+          </div>
+          <div className="card-title">
+            <h2>상준형 컴퓨터 고쳐주기 벙</h2>
+          </div>
+        </div>
+        <div className="card-middle">
+          <div className="card-date">
+            <p>2025년 3월 7일 (금) 오후 7:00 ~ 오후 11:00</p>
+          </div>
+          <div className="card-place">
+            <p>강남</p>
+          </div>
+        </div>
+        <div className="card-bottom">
+          <div className="card-button">
+            <button>참석</button>
+            <button>상보참</button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default CalcCard;

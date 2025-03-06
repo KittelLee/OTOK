@@ -1,3 +1,4 @@
+import CalcCard from "../components/Calc/CalcCard";
 import UploadIcon from "../assets/icons/upload.svg";
 import "../styles/Calc.css";
 
@@ -10,6 +11,10 @@ function Calc() {
           <button>
             <img src={UploadIcon} />
           </button>
+        </div>
+        <div>
+          <CalcCard />
+          <CalcCard />
         </div>
         <div>
           <p>1. (벙주체크) 인원 및 사람체크</p>
