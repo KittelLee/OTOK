@@ -46,7 +46,7 @@ function Home() {
           </p>
         </div>
         <div className="kakao-btn-box">
-          <Link to="https://open.kakao.com/o/g1BY1fAg" className="kakao-btn">
+          <Link to="./room" className="kakao-btn">
             <img src={kakaoLogo} alt="카카오톡로고" />
             카카오톡으로 이동하기
           </Link>

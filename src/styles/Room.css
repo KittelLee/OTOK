@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.room-wrap p {
+  text-align: center;
+}
+
 .room-top,
 .room-bottom {
   display: flex;
