@@ -38,6 +38,11 @@ function Header({ user, onLogout }) {
               </Link>
             </li>
             <li>
+              <Link to="/room" onClick={handleLinkClick}>
+                방이동
+              </Link>
+            </li>
+            <li>
               <Link to="/calc" onClick={handleLinkClick}>
                 정산하기
               </Link>

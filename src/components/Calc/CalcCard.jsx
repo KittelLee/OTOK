@@ -9,7 +9,7 @@ function CalcCard() {
             <p>1</p>
           </div>
           <div className="card-title">
-            <h2>상준형 컴퓨터 고쳐주기 벙</h2>
+            <h2>정가현 뽀뽀 벙</h2>
           </div>
         </div>
         <div className="card-middle">
@@ -24,6 +24,9 @@ function CalcCard() {
           <div className="card-button">
             <button>참석</button>
             <button>상보참</button>
+            <div className="card-person">
+              <p>N명 참석, N명 상보참</p>
+            </div>
           </div>
         </div>
       </div>

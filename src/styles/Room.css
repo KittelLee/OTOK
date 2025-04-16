@@ -1,0 +1,37 @@
+.room-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.room-top,
+.room-bottom {
+  display: flex;
+  margin: 0 auto;
+}
+
+.room-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  width: 220px;
+  height: 230px;
+  margin: 10px;
+}
+
+.room-info:hover {
+  background-color: lightgray;
+}
+
+.room-info a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  text-align: center;
+}
+
+.room-info img {
+  width: 170px;
+  height: 170px;
+  border-radius: 4px;
+}

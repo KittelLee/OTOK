@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Rule from "./pages/Rule";
+import Room from "./pages/Room";
 import Calc from "./pages/Calc";
 import Gallery from "./pages/Gallery";
 import Game from "./pages/Game";
@@ -72,6 +73,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rule" element={<Rule />}></Route>
+            <Route path="/room" element={<Room />}></Route>
             <Route
               path="/calc"
               element={

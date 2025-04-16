@@ -71,6 +71,11 @@
   height: 33%;
 }
 
+.card-button {
+  display: flex;
+  align-items: center;
+}
+
 .card-button button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.22);
   border: none;
@@ -88,6 +93,14 @@
   background-color: lightskyblue;
 }
 
-.card-button > button:last-child:hover {
+.card-button > button:nth-child(2):hover {
   background-color: salmon;
+}
+
+.card-person {
+  margin-left: 140px;
+}
+
+.card-person p {
+  font-size: 14px;
 }
