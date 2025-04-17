@@ -9,7 +9,7 @@ function CalcCard() {
             <p>1</p>
           </div>
           <div className="card-title">
-            <h2>정가현 뽀뽀 벙</h2>
+            <h2>잠실벙</h2>
           </div>
         </div>
         <div className="card-middle">
@@ -17,7 +17,7 @@ function CalcCard() {
             <p>2025년 3월 7일 (금) 오후 7:00 ~ 오후 11:00</p>
           </div>
           <div className="card-place">
-            <p>강남</p>
+            <p>잠실</p>
           </div>
         </div>
         <div className="card-bottom">
