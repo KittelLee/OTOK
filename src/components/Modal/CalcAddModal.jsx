@@ -1,6 +1,19 @@
+import { useMemo } from "react";
 import "../../styles/Modal/CalcAddModal.css";
 
 function CalcAddModal() {
+  //현재시간
+  const formattedNow = useMemo(() => {
+    const now = new Date();
+    const Year = now.getFullYear();
+    const Month = String(now.getMonth() + 1).padStart(2, "0");
+    const Day = String(now.getDate()).padStart(2, "0");
+    const Hour = String(now.getHours()).padStart(2, "0");
+    const Minute = String(now.getMinutes()).padStart(2, "0");
+
+    return `${Year}-${Month}-${Day}T${Hour}:${Minute}`;
+  }, []);
+
   return (
     <>
       <section className="calcAddModal-wrap">
@@ -37,7 +50,7 @@ function CalcAddModal() {
 
           <div className="form-field">
             <label>벙 시작 시간</label>
-            <input type="datetime-local" />
+            <input type="datetime-local" defaultValue={formattedNow} required />
           </div>
 
           <div className="form-field">

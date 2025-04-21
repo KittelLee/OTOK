@@ -22,6 +22,7 @@ function ModalForm({ isOpen, onClose, children }) {
           backgroundColor: "rgba(0, 0, 0, 0.75)",
         },
         content: {
+          minWidth: "260px",
           color: "black",
           top: "50%",
           left: "50%",
