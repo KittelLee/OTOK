@@ -7,8 +7,8 @@
   flex-direction: column;
   background-color: white;
   margin: 8px 0;
-  width: 390px;
-  height: 160px;
+  width: 380px;
+  height: 150px;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.22);
 }
