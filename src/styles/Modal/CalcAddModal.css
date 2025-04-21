@@ -6,6 +6,7 @@
   background-color: var(--yellow-color);
   min-height: 410px;
   border-radius: 4px;
+  padding-bottom: 20px;
 }
 
 .calcAddModal-wrap h2 {
@@ -52,7 +53,6 @@
 
 .form-button {
   margin-top: 10px;
-  margin-bottom: 16px;
   display: flex;
   justify-content: center;
 }
