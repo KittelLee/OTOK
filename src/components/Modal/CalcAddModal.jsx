@@ -62,6 +62,9 @@ function CalcAddModal() {
             <label>벙 장소</label>
             <input type="text" placeholder="벙 장소를 입력하세요" />
           </div>
+          <div className="form-button">
+            <button>벙 만들기</button>
+          </div>
         </form>
       </section>
     </>

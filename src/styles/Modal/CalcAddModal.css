@@ -4,7 +4,7 @@
 
 .calcAddModal-wrap {
   background-color: var(--yellow-color);
-  min-height: 380px;
+  min-height: 410px;
   border-radius: 4px;
 }
 
@@ -33,9 +33,37 @@
   font-size: 16px;
 }
 
+.form-field input[type="datetime-local"] {
+  box-sizing: border-box;
+  width: 96%;
+  height: 20px;
+  padding: 0.5rem 0.25rem;
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
 .form-field input,
 .form-field select {
   border: none;
   border-radius: 4px;
   width: 96%;
+}
+
+.form-button {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-button button {
+  width: 96%;
+  border: none;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.form-button button:hover {
+  background-color: lightgray;
+  cursor: pointer;
 }
