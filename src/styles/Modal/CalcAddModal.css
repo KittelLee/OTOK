@@ -27,11 +27,12 @@
 
 .form-field select {
   margin-bottom: 2px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .form-field input {
   font-size: 18px;
+  padding: 1px;
 }
 
 .form-field input[type="datetime-local"] {
