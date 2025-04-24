@@ -60,7 +60,7 @@ function Header({ user }) {
             {user ? (
               <li>
                 <span className="user-display" onClick={handleLogout}>
-                  + {user.displayName || user.email}
+                  {user.displayName || user.email}
                 </span>
               </li>
             ) : (
