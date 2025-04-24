@@ -3,10 +3,9 @@ import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import "../styles/Login.css";
 
-function Login({ onLogin }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -21,12 +20,6 @@ function Login({ onLogin }) {
         password
       );
       const user = userCredential.user;
-
-      onLogin({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-      });
 
       toast.success(`🎉 환영합니다, ${user.email}!`, {
         autoClose: 1000,
@@ -76,9 +69,5 @@ function Login({ onLogin }) {
     </>
   );
 }
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};
 
 export default Login;
