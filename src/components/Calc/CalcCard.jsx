@@ -14,7 +14,10 @@ function CalcCard() {
         </div>
         <div className="card-middle">
           <div className="card-date">
-            <p>2025년 3월 7일 (금) 오후 7:00 ~ 오후 11:00</p>
+            <p>
+              2025년 3월 7일 (금) 오후 7:00 ~ <br />
+              2025년 3월 8일 (토) 오후 11:00
+            </p>
           </div>
           <div className="card-place">
             <p>잠실</p>

@@ -60,6 +60,14 @@
   padding-left: 12%;
 }
 
+.card-date {
+  margin-top: 6px;
+}
+
+.card-date p {
+  line-height: 1.2;
+}
+
 .card-place p {
   margin-top: 6px;
   color: gray;
