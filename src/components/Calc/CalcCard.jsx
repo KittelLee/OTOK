@@ -21,12 +21,8 @@ function CalcCard() {
           </div>
         </div>
         <div className="card-bottom">
-          <div className="card-button">
-            <button>참석</button>
-            <button>상보참</button>
-            <div className="card-person">
-              <p>N명 참석, N명 상보참</p>
-            </div>
+          <div className="card-person">
+            <p>N명 참석, N명 상보참</p>
           </div>
         </div>
       </div>

@@ -25,6 +25,23 @@ function CalcAddModal() {
           </div>
 
           <div className="form-field">
+            <label>선입금비용</label>
+            <select>
+              <option>없음</option>
+              <option>10,000원</option>
+              <option>15,000원</option>
+              <option>20,000원</option>
+              <option>25,000원</option>
+              <option>30,000원</option>
+              <option>35,000원</option>
+              <option>40,000원</option>
+              <option>45,000원</option>
+              <option>50,000원</option>
+              <option>100,000원</option>
+            </select>
+          </div>
+
+          <div className="form-field">
             <label>벙주 입력</label>
             <input type="text" placeholder="벙주를 입력하세요" required />
           </div>
@@ -62,6 +79,12 @@ function CalcAddModal() {
             <label>벙 장소</label>
             <input type="text" placeholder="벙 장소를 입력하세요" />
           </div>
+
+          <div className="form-field">
+            <label>정산방 카톡링크</label>
+            <input type="text" placeholder="카톡링크를 여기에 입력하세요" />
+          </div>
+
           <div className="form-button">
             <button>벙 만들기</button>
           </div>

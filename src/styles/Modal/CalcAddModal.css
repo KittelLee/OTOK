@@ -11,7 +11,7 @@
 
 .calcAddModal-wrap h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .form-field {
@@ -60,7 +60,8 @@
 
 .form-button button {
   width: 96%;
-  height: 24px;
+  height: 28px;
+  font-size: 18px;
   border: none;
   border-radius: 4px;
   background-color: white;
