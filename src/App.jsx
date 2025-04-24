@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseConfig";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,12 +18,8 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import "./App.css";
 
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-function ProtectedRoute({ children }) {
-  const isAuthenticated = !!localStorage.getItem("user");
+function ProtectedRoute({ user, children }) {
+  const isAuthenticated = !!user;
   const hasShownToast = useRef(false);
 
   useEffect(() => {
@@ -40,23 +38,22 @@ function ProtectedRoute({ children }) {
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 500);
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
-
-  const handleLogin = (userData) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-  };
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 500);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 500);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Firebase 로그인 상태 감지
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(
+        u ? { uid: u.uid, email: u.email, displayName: u.displayName } : null
+      );
+    });
+    return unsub;
   }, []);
 
   return (
@@ -68,7 +65,7 @@ function App() {
       />
       {isMobile ? (
         <>
-          <Header user={user} onLogout={() => setUser(null)} />
+          <Header user={user} onLogout={() => auth.signOut()} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/rule" element={<Rule />}></Route>
@@ -76,7 +73,7 @@ function App() {
             <Route
               path="/calc"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute user={user}>
                   <Calc />
                 </ProtectedRoute>
               }
@@ -98,10 +95,7 @@ function App() {
               }
             />
             <Route path="/signUp" element={<SignUp />}></Route>
-            <Route
-              path="/login"
-              element={<Login onLogin={handleLogin} />}
-            ></Route>
+            <Route path="/login" element={<Login />}></Route>
           </Routes>
           <Footer />
         </>
@@ -115,3 +109,8 @@ function App() {
 }
 
 export default App;
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  user: PropTypes.object,
+};

@@ -7,7 +7,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { db, auth } from "../../firebaseConfig";
 import CalcCard from "../components/Calc/CalcCard";
 import CalcModal from "../components/Modal/CalcAddModal";
 import ModalForm from "../common/Modal/ModalForm";
@@ -19,17 +19,19 @@ function Calc() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
 
-  // Firestore 구독
+  // 🔒 로그인된 뒤에만 구독
   useEffect(() => {
-    const q = collection(db, "events");
-    const unsub = onSnapshot(q, (snap) => {
-      const list = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      // 최신 → 오래된 순 정렬 (원하면 created 필드 기준)
-      list.sort((a, b) => b.created - a.created);
+    if (!auth.currentUser) return; // 로그인 전이면 패스
+
+    const unsub = onSnapshot(collection(db, "events"), (snap) => {
+      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      list.sort(
+        (a, b) => (b.created?.seconds ?? 0) - (a.created?.seconds ?? 0)
+      );
       setEvents(list);
     });
-    return () => unsub();
-  }, []);
+    return unsub;
+  }, [auth.currentUser]);
 
   // 자식(modal)에서 호출할 addEvent 콜백
   const addEvent = useCallback(async (ev) => {
