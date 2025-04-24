@@ -105,19 +105,19 @@ function Home() {
                 빨리친해질수있게 간단하게 자기소개부탁해!
                 <br />
                 <br />
-                <p id="align-left">
-                  닉네임 :<br />
-                  유입경로(검색어) :<br />
-                  거주 :<br />
-                  직업 :<br />
-                  이상형 : <br />
-                  MBTI :<br />
-                  주량 :<br />
-                  흡연 :<br />
-                  취미 :<br />
-                  첫벙 예정일:
-                </p>
               </p>
+              <span id="align-left">
+                닉네임 :<br />
+                유입경로(검색어) :<br />
+                거주 :<br />
+                직업 :<br />
+                이상형 : <br />
+                MBTI :<br />
+                주량 :<br />
+                흡연 :<br />
+                취미 :<br />
+                첫벙 예정일:
+              </span>
             </div>
           </div>
         </div>

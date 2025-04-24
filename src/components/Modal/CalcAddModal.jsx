@@ -1,88 +1,142 @@
-import { useMemo } from "react";
+import { useState } from "react";
+import dayjs from "dayjs";
+import PropTypes from "prop-types";
 import "../../styles/Modal/CalcAddModal.css";
 
-function CalcAddModal() {
-  //현재시간
-  const formattedNow = useMemo(() => {
-    const now = new Date();
-    const Year = now.getFullYear();
-    const Month = String(now.getMonth() + 1).padStart(2, "0");
-    const Day = String(now.getDate()).padStart(2, "0");
-    const Hour = String(now.getHours()).padStart(2, "0");
-    const Minute = String(now.getMinutes()).padStart(2, "0");
+function CalcAddModal({ onSubmit }) {
+  const now = dayjs().format("YYYY-MM-DDTHH:mm");
 
-    return `${Year}-${Month}-${Day}T${Hour}:${Minute}`;
-  }, []);
+  const [title, setTitle] = useState("");
+  const [fee, setFee] = useState("없음");
+  const [host, setHost] = useState("");
+  const [bank, setBank] = useState("카카오페이");
+  const [account, setAccount] = useState("");
+  const [start, setStart] = useState(now);
+  const [end, setEnd] = useState("");
+  const [place, setPlace] = useState("");
+  const [link, setLink] = useState("");
 
+  // 제출폼
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onSubmit({
+      title,
+      fee,
+      host,
+      bank,
+      account,
+      start,
+      end,
+      place,
+      link,
+    });
+  };
   return (
     <>
       <section className="calcAddModal-wrap">
         <h2>벙 개최하기</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label>제목 입력</label>
-            <input type="text" placeholder="벙 제목을 입력하세요" required />
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="벙 제목을 입력하세요"
+              required
+            />
           </div>
 
           <div className="form-field">
             <label>선입금비용</label>
-            <select>
+            <select value={fee} onChange={(e) => setFee(e.target.value)}>
               <option>없음</option>
-              <option>10,000원</option>
-              <option>15,000원</option>
-              <option>20,000원</option>
-              <option>25,000원</option>
-              <option>30,000원</option>
-              <option>35,000원</option>
-              <option>40,000원</option>
-              <option>45,000원</option>
-              <option>50,000원</option>
-              <option>100,000원</option>
+              {[
+                10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
+                100000,
+              ].map((v) => (
+                <option key={v}>{v.toLocaleString()}원</option>
+              ))}
             </select>
           </div>
 
           <div className="form-field">
             <label>벙주 입력</label>
-            <input type="text" placeholder="벙주를 입력하세요" required />
+            <input
+              type="text"
+              value={host}
+              onChange={(e) => setHost(e.target.value)}
+              placeholder="벙주를 입력하세요"
+              required
+            />
           </div>
 
           <div className="form-field">
             <label>벙주 계좌입력</label>
-            <select>
-              <option>국민은행</option>
-              <option>신한은행</option>
-              <option>농협은행</option>
-              <option>기업은행</option>
-              <option>우리은행</option>
-              <option>하나은행</option>
-              <option>산업은행</option>
-              <option>씨티은행</option>
-              <option>케이뱅크</option>
-              <option>토스뱅크</option>
-              <option>카카오뱅크</option>
-              <option>카카오페이</option>
+            <select value={bank} onChange={(e) => setBank(e.target.value)}>
+              {[
+                "국민은행",
+                "신한은행",
+                "농협은행",
+                "기업은행",
+                "우리은행",
+                "하나은행",
+                "산업은행",
+                "씨티은행",
+                "케이뱅크",
+                "토스뱅크",
+                "카카오뱅크",
+                "카카오페이",
+              ].map((name) => (
+                <option key={name}>{name}</option>
+              ))}
             </select>
-            <input type="text" placeholder="계좌입력" />
+            <input
+              type="text"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
+              placeholder="계좌입력"
+            />
           </div>
 
           <div className="form-field">
             <label>벙 시작 시간</label>
-            <input type="datetime-local" defaultValue={formattedNow} required />
+            <input
+              type="datetime-local"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              required
+            />
           </div>
 
           <div className="form-field">
             <label>벙 종료 시간</label>
-            <input type="datetime-local" />
+            <input
+              type="datetime-local"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+            />
           </div>
 
           <div className="form-field">
             <label>벙 장소</label>
-            <input type="text" placeholder="벙 장소를 입력하세요" />
+            <input
+              type="text"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+              placeholder="벙 장소를 입력하세요"
+            />
           </div>
 
           <div className="form-field">
             <label>정산방 카톡링크</label>
-            <input type="text" placeholder="카톡링크를 여기에 입력하세요" />
+            <input
+              type="text"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="카톡링크를 여기에 입력하세요"
+            />
           </div>
 
           <div className="form-button">
@@ -95,3 +149,7 @@ function CalcAddModal() {
 }
 
 export default CalcAddModal;
+
+CalcAddModal.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
