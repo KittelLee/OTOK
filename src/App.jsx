@@ -10,7 +10,6 @@ import Home from "./pages/Home";
 import Rule from "./pages/Rule";
 import Room from "./pages/Room";
 import Calc from "./pages/Calc";
-import Gallery from "./pages/Gallery";
 import Game from "./pages/Game";
 import Meeting from "./pages/Meeting";
 import SignUp from "./pages/SignUp";
@@ -79,14 +78,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Calc />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/gallery"
-              element={
-                <ProtectedRoute>
-                  <Gallery />
                 </ProtectedRoute>
               }
             />

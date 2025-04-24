@@ -8,7 +8,7 @@
   background-color: white;
   margin: 8px 0;
   width: 360px;
-  height: 140px;
+  height: 120px;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.22);
 }
@@ -71,8 +71,8 @@
 
 .card-person {
   position: absolute;
-  top: 20px;
-  right: 10px;
+  top: 18px;
+  right: 8px;
 }
 
 .card-person p {
