@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { auth } from "../../firebaseConfig";
 import PropTypes from "prop-types";
 import bars from "../assets/icons/bars.svg";
 import "../styles/Header.css";
 
-function Header({ user, onLogout }) {
+function Header({ user }) {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const toggleNav = () => {
@@ -13,8 +14,7 @@ function Header({ user, onLogout }) {
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까?")) {
-      localStorage.removeItem("user");
-      onLogout();
+      auth.signOut();
     }
   };
 
@@ -60,7 +60,7 @@ function Header({ user, onLogout }) {
             {user ? (
               <li>
                 <span className="user-display" onClick={handleLogout}>
-                  {user.displayName}
+                  + {user.displayName || user.email}
                 </span>
               </li>
             ) : (
@@ -90,8 +90,8 @@ function Header({ user, onLogout }) {
 Header.propTypes = {
   user: PropTypes.shape({
     displayName: PropTypes.string,
+    email: PropTypes.string,
   }),
-  onLogout: PropTypes.func.isRequired,
 };
 
 export default Header;
