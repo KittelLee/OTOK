@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 import {
   collection,
   addDoc,
@@ -14,7 +15,7 @@ import ModalForm from "../common/Modal/ModalForm";
 import UploadIcon from "../assets/icons/upload.svg";
 import "../styles/Calc.css";
 
-function Calc() {
+function Calc({ user }) {
   // 모달 & 목록 state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
@@ -38,6 +39,7 @@ function Calc() {
     await addDoc(collection(db, "events"), {
       ...ev,
       created: serverTimestamp(),
+      createdBy: auth.currentUser.uid,
     });
     setIsModalOpen(false);
   }, []);
@@ -65,6 +67,7 @@ function Calc() {
               index={idx + 1}
               event={ev}
               onDelete={deleteEvent}
+              user={user}
             />
           ))}
         </div>
@@ -77,3 +80,11 @@ function Calc() {
 }
 
 export default Calc;
+
+Calc.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    displayName: PropTypes.string,
+  }),
+};

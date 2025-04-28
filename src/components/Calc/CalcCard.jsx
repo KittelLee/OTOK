@@ -16,8 +16,10 @@ function formatKoreanDateTime(startISO, endISO) {
     }) ` + d.format("A h:mm");
   return endISO ? `${fmt(s)} ~\n${fmt(e)}` : fmt(s);
 }
-function CalcCard({ index, event, onDelete }) {
-  const { id, title, place, start, end } = event;
+function CalcCard({ index, event, onDelete, user }) {
+  const { id, title, place, start, end, createdBy } = event;
+
+  const isOwner = user && user.uid === createdBy;
 
   return (
     <>
@@ -28,13 +30,16 @@ function CalcCard({ index, event, onDelete }) {
           </div>
           <div className="card-title">
             <h2>{title}</h2>
-            <div
-              className="close-button"
-              onClick={() => onDelete(id)}
-              title="삭제"
-            >
-              ❌
-            </div>
+            {/* 만든 사람에게만 삭제 버튼 노출 */}
+            {isOwner && (
+              <div
+                className="close-button"
+                onClick={() => onDelete(id)}
+                title="삭제"
+              >
+                ❌
+              </div>
+            )}
           </div>
         </div>
         <div className="card-middle">
@@ -65,6 +70,10 @@ CalcCard.propTypes = {
     place: PropTypes.string,
     start: PropTypes.string.isRequired,
     end: PropTypes.string,
+    createdBy: PropTypes.string,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    uid: PropTypes.string.isRequired,
+  }).isRequired,
 };

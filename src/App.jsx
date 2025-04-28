@@ -86,7 +86,7 @@ function App() {
               path="/calc"
               element={
                 <ProtectedRoute user={user} ready={authReady}>
-                  <Calc />
+                  <Calc user={user} />
                 </ProtectedRoute>
               }
             />
