@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import "../../styles/Modal/CalcAddModal.css";
@@ -16,9 +17,30 @@ function CalcAddModal({ onSubmit }) {
   const [place, setPlace] = useState("");
   const [link, setLink] = useState("");
 
+  // ① bank가 카카오페이일 때 account 입력창 초기화
+  useEffect(() => {
+    if (bank === "카카오페이") setAccount("");
+  }, [bank]);
+
+  // ② 자주 쓰이니 편하게 변수로
+  const isKakaoPay = bank === "카카오페이";
+
   // 제출폼
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      !title ||
+      !host ||
+      (!isKakaoPay && !account) ||
+      !start ||
+      !end ||
+      !place ||
+      !link
+    ) {
+      toast.error("모든 입력란을 빠짐없이 작성해주세요!");
+      return;
+    }
 
     onSubmit({
       title,
@@ -31,7 +53,10 @@ function CalcAddModal({ onSubmit }) {
       place,
       link,
     });
+
+    toast.success("벙이 성공적으로 생성되었습니다!");
   };
+
   return (
     <>
       <section className="calcAddModal-wrap">
@@ -96,7 +121,10 @@ function CalcAddModal({ onSubmit }) {
               type="text"
               value={account}
               onChange={(e) => setAccount(e.target.value)}
-              placeholder="계좌입력"
+              placeholder={
+                isKakaoPay ? "카카오페이는 계좌가 필요 없어요" : "계좌입력"
+              }
+              disabled={isKakaoPay}
             />
           </div>
 

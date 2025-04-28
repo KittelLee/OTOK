@@ -18,27 +18,38 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import "./App.css";
 
-function ProtectedRoute({ user, children }) {
+/* ---------------- ProtectedRoute ---------------- */
+function ProtectedRoute({ user, ready, children }) {
   const isAuthenticated = !!user;
-  const hasShownToast = useRef(false);
+  const toastShown = useRef(false);
 
   useEffect(() => {
-    if (!hasShownToast.current) {
-      if (!isAuthenticated) {
-        toast.error("로그인 후 이용하세요");
-      } else {
-        toast.success("환영합니다");
-      }
-      hasShownToast.current = true;
-    }
-  }, [isAuthenticated]);
+    if (!ready) return; // 로딩 스피너 차후에 넣기
+    if (toastShown.current) return;
+    toast[isAuthenticated ? "success" : "error"](
+      isAuthenticated ? "환영합니다" : "로그인 후 이용하세요"
+    );
+    toastShown.current = true;
+  }, [ready, isAuthenticated]);
+
+  if (!ready) {
+    return null;
+  }
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  user: PropTypes.object,
+  ready: PropTypes.bool,
+};
+
+/* ---------------- App ---------------- */
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 500);
   const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 500);
@@ -46,12 +57,13 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Firebase 로그인 상태 감지
+  // Firebase 로그인 상태 구독
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(
         u ? { uid: u.uid, email: u.email, displayName: u.displayName } : null
       );
+      setAuthReady(true);
     });
     return unsub;
   }, []);
@@ -73,7 +85,7 @@ function App() {
             <Route
               path="/calc"
               element={
-                <ProtectedRoute user={user}>
+                <ProtectedRoute user={user} ready={authReady}>
                   <Calc />
                 </ProtectedRoute>
               }
@@ -81,7 +93,7 @@ function App() {
             <Route
               path="/game"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute user={user} ready={authReady}>
                   <Game />
                 </ProtectedRoute>
               }
@@ -89,7 +101,7 @@ function App() {
             <Route
               path="/meeting"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute user={user} ready={authReady}>
                   <Meeting />
                 </ProtectedRoute>
               }
