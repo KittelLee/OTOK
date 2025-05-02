@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import weekday from "dayjs/plugin/weekday";
-import "../../styles/CalcCard.css";
+import "../../styles/Calc/CalcCard.css";
 
 dayjs.extend(weekday);
 dayjs.locale("ko");
@@ -16,14 +16,14 @@ function formatKoreanDateTime(startISO, endISO) {
     }) ` + d.format("A h:mm");
   return endISO ? `${fmt(s)} ~\n${fmt(e)}` : fmt(s);
 }
+
 function CalcCard({ index, event, onDelete, user }) {
   const { id, title, place, start, end, createdBy } = event;
-
   const isOwner = user && user.uid === createdBy;
 
   return (
     <>
-      <div className="card-wrap">
+      <section className="card-wrap">
         <div className="card-top">
           <div className="card-num">
             <p>{index}</p>
@@ -34,7 +34,11 @@ function CalcCard({ index, event, onDelete, user }) {
             {isOwner && (
               <div
                 className="close-button"
-                onClick={() => onDelete(id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onDelete(id);
+                }}
                 title="삭제"
               >
                 ❌
@@ -55,7 +59,7 @@ function CalcCard({ index, event, onDelete, user }) {
             <p>N명 참석, N명 상보참</p>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

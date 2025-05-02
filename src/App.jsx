@@ -12,7 +12,8 @@ import Home from "./pages/Home";
 import Rule from "./pages/Rule";
 import Room from "./pages/Room";
 import Calc from "./pages/Calc";
-import Game from "./pages/Game";
+import CalcMain from "./components/Calc/CalcMain";
+import Out from "./pages/Out";
 import Meeting from "./pages/Meeting";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
@@ -91,13 +92,21 @@ function App() {
               }
             />
             <Route
-              path="/game"
+              path="/calcMain/:eventId"
               element={
                 <ProtectedRoute user={user} ready={authReady}>
-                  <Game />
+                  <CalcMain user={user} />
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/out"
+              element={
+                <ProtectedRoute user={user} ready={authReady}>
+                  <Out user={user} />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route
               path="/meeting"
               element={

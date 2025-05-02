@@ -1,0 +1,137 @@
+:root {
+  --yellow-color: rgb(246, 218, 101);
+}
+
+.calcMain-wrap {
+  background-color: var(--yellow-color);
+  border-radius: 6px;
+  margin: 4px;
+  padding: 2px;
+  line-height: 1.5;
+}
+
+.cash-wrap {
+  margin-top: 4px;
+  display: flex;
+}
+
+.cash-left {
+  background-color: white;
+  border-radius: 6px;
+  padding: 0 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cash-left p:hover:last-child {
+  cursor: pointer;
+  color: blue;
+}
+
+.cash-left p:nth-child(2),
+.cash-left p:nth-child(3),
+.total-people p:last-child,
+#font-red {
+  color: red;
+  font-weight: bold;
+}
+
+.cash-right {
+  background-color: white;
+  width: 80%;
+  border-radius: 6px;
+  padding: 0 2px;
+  margin-left: 4px;
+  display: flex;
+}
+
+.total-people,
+.cash-done {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#bar {
+  background-color: black;
+  border-radius: 6px;
+  width: 2px;
+  height: 94%;
+  margin: auto 2px;
+}
+
+.standBy-people,
+.standBy-list {
+  display: flex;
+}
+
+.standBy-people,
+.attendance {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+.standBy-people p,
+.attendance p {
+  margin-left: 2px;
+}
+
+.standBy-list {
+  margin-left: 4px;
+}
+
+.standBy-list p {
+  background-color: lightskyblue;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 2px;
+}
+
+#cha-plus {
+  margin-bottom: 4px;
+}
+
+#cha-plus button {
+  border: none;
+  background-color: white;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+#cha-plus button:hover {
+  background-color: lightgray;
+  cursor: pointer;
+}
+
+.cha-info {
+  display: flex;
+  align-items: center;
+}
+
+.cha-sub {
+  display: flex;
+  margin-left: 10px;
+}
+
+.cha-sub p {
+  margin: 0 4px;
+}
+
+.attendance-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.attendance-wrap p:nth-child(2) {
+  margin: 0 auto;
+}
+
+.attendance {
+  width: 90%;
+}

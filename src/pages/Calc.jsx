@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   collection,
@@ -62,13 +63,18 @@ function Calc({ user }) {
 
         <div>
           {events.map((ev, idx) => (
-            <CalcCard
+            <Link
               key={ev.id}
-              index={idx + 1}
-              event={ev}
-              onDelete={deleteEvent}
-              user={user}
-            />
+              to={`/calcMain/${ev.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <CalcCard
+                index={idx + 1}
+                event={ev}
+                onDelete={deleteEvent}
+                user={user}
+              />
+            </Link>
           ))}
         </div>
       </section>

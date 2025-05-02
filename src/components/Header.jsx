@@ -48,8 +48,8 @@ function Header({ user }) {
               </Link>
             </li>
             <li>
-              <Link to="/game" onClick={handleLinkClick}>
-                게임방
+              <Link to="/out" onClick={handleLinkClick}>
+                외출신청
               </Link>
             </li>
             <li>
