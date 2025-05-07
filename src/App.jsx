@@ -14,7 +14,7 @@ import Room from "./pages/Room";
 import Calc from "./pages/Calc";
 import CalcMain from "./components/Calc/CalcMain";
 import Out from "./pages/Out";
-import Meeting from "./pages/Meeting";
+import LotteryPrediction from "./pages/LotteryPrediction";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import "./App.css";
@@ -108,10 +108,10 @@ function App() {
               }
             ></Route>
             <Route
-              path="/meeting"
+              path="/lotteryPrediction"
               element={
                 <ProtectedRoute user={user} ready={authReady}>
-                  <Meeting />
+                  <LotteryPrediction />
                 </ProtectedRoute>
               }
             />

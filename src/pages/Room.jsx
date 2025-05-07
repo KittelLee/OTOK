@@ -25,7 +25,7 @@ function Room() {
           </div>
         </div>
 
-        <div className="room-bottom">
+        <div className="room-middle">
           <div className="room-info">
             <a href="https://open.kakao.com/o/gBY9BKhh">
               <img src={room3} />
@@ -37,6 +37,22 @@ function Room() {
             <a href="https://open.kakao.com/o/gsz3Mmnh">
               <img src={room4} />
               <p>4방 링크</p>
+            </a>
+          </div>
+        </div>
+
+        <div className="room-bottom">
+          <div className="room-info">
+            <a href="#">
+              <img src="#" />
+              <p>5방 링크</p>
+            </a>
+          </div>
+
+          <div className="room-info">
+            <a href="#">
+              <img src="#" />
+              <p>6방 링크</p>
             </a>
           </div>
         </div>

@@ -24,7 +24,7 @@
   align-items: center;
 }
 
-.cash-left p:hover:last-child {
+.cash-left a:hover {
   cursor: pointer;
   color: blue;
 }

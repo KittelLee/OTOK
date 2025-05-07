@@ -9,6 +9,7 @@
 }
 
 .room-top,
+.room-middle,
 .room-bottom {
   display: flex;
   margin: 0 auto;

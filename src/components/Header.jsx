@@ -53,8 +53,8 @@ function Header({ user }) {
               </Link>
             </li>
             <li>
-              <Link to="/meeting" onClick={handleLinkClick}>
-                정모방
+              <Link to="/lotteryPrediction" onClick={handleLinkClick}>
+                복권예측
               </Link>
             </li>
             {user ? (

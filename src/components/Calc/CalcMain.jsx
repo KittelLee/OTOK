@@ -6,11 +6,25 @@ import dayjs from "dayjs";
 import "../../styles/Calc/CalcMain.css";
 
 function CalcMain() {
-  const { eventId } = useParams(); // URL 에서 123abc 추출
+  const { eventId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [event, setEvent] = useState(location.state || null);
   const [loading, setLoading] = useState(!location.state);
+
+  const handleCopyAccount = async () => {
+    if (!event?.account) {
+      alert("등록된 계좌번호가 없습니다.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(event.account);
+      alert("계좌번호가 클립보드에 복사되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("복사 권한이 거부되었거나 지원되지 않는 브라우저입니다.");
+    }
+  };
 
   useEffect(() => {
     if (event) return;
@@ -51,7 +65,7 @@ function CalcMain() {
             <p>선입금</p>
             <p>{event.bank}</p>
             <p>{event.fee}</p>
-            <p>계좌번호 복사</p>
+            <a onClick={handleCopyAccount}>계좌번호 복사</a>
           </div>
           <div className="cash-right">
             <div className="total-people">
@@ -74,12 +88,31 @@ function CalcMain() {
             <p>이언</p>
           </div>
         </div>
+
         <div id="cha-plus">
           <button>N차 참 +</button>
         </div>
+        
         <div className="N-cha">
           <div className="cha-info">
             <h3>1차참</h3>
+            <div className="cha-sub">
+              <p>상세장소</p>
+              <p>시간</p>
+              <p>마감인원</p>
+            </div>
+          </div>
+          <div className="attendance-wrap">
+            <div className="attendance">
+              <p>키텔</p>
+            </div>
+            <p>1 / 14</p>
+          </div>
+        </div>
+
+        <div className="N-cha">
+          <div className="cha-info">
+            <h3>2차참</h3>
             <div className="cha-sub">
               <p>상세장소</p>
               <p>시간</p>
