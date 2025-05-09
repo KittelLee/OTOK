@@ -106,18 +106,39 @@ function CalcMain() {
             <div className="total-people">
               <p>총 인원 수</p>
               <p>N 명</p>
-              <button>추가하기</button>
             </div>
-            <div id="bar" />
+            <div className="bar" />
             <div className="cash-done">
-              <p>입 완: </p>
-              <p>입 미완: </p>
+              <button>입금 완료자 추가</button>
+              <button>입금 미완료자 추가</button>
+              <button>상보참 추가</button>
             </div>
           </div>
         </div>
+
+        <div className="cash-complete">
+          <p>
+            입금 완료자 <b className="font-red">N명</b>
+          </p>
+          <div className="person-list">
+            <p>키텔</p>
+            <p>이언</p>
+          </div>
+        </div>
+
+        <div className="cash-incomplete">
+          <p>
+            입금 미완료자 <b className="font-red">N명</b>
+          </p>
+          <div className="person-list">
+            <p>키텔</p>
+            <p>이언</p>
+          </div>
+        </div>
+
         <div className="standBy-people">
           <p>
-            상보참 <b id="font-red">N명</b>
+            상보참 <b className="font-red">N명</b>
           </p>
           <div className="standBy-list">
             <p>키텔</p>
