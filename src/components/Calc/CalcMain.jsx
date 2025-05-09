@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import dayjs from "dayjs";
 import "../../styles/Calc/CalcMain.css";
@@ -9,8 +9,43 @@ function CalcMain() {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [chaList, setChaList] = useState([]);
   const [event, setEvent] = useState(location.state || null);
   const [loading, setLoading] = useState(!location.state);
+
+  useEffect(() => {
+    if (Array.isArray(event?.chas)) setChaList(event.chas);
+  }, [event]);
+
+  const addCha = async () => {
+    if (chaList.length >= 7) {
+      alert("최대 7차까지만 추가할 수 있습니다.");
+      return;
+    }
+    const next = [
+      ...chaList,
+      { place: "", time: "", limit: "", attendees: [] },
+    ];
+    setChaList(next);
+    try {
+      await updateDoc(doc(db, "events", eventId), { chas: next });
+    } catch (e) {
+      console.error(e);
+      alert("저장 실패");
+    }
+  };
+
+  const removeCha = async () => {
+    if (!chaList.length) return;
+    const next = chaList.slice(0, -1);
+    setChaList(next);
+    try {
+      await updateDoc(doc(db, "events", eventId), { chas: next });
+    } catch (e) {
+      console.error(e);
+      alert("삭제 실패");
+    }
+  };
 
   const handleCopyAccount = async () => {
     if (!event?.account) {
@@ -42,7 +77,7 @@ function CalcMain() {
       }
     };
     fetch();
-  }, [eventId]);
+  }, [event, eventId, navigate]);
 
   if (loading) return <p style={{ padding: 24 }}>로딩 중…</p>;
   if (!event) return null;
@@ -65,12 +100,13 @@ function CalcMain() {
             <p>선입금</p>
             <p>{event.bank}</p>
             <p>{event.fee}</p>
-            <a onClick={handleCopyAccount}>계좌번호 복사</a>
+            <button onClick={handleCopyAccount}>계좌번호 복사</button>
           </div>
           <div className="cash-right">
             <div className="total-people">
               <p>총 인원 수</p>
               <p>N 명</p>
+              <button>추가하기</button>
             </div>
             <div id="bar" />
             <div className="cash-done">
@@ -90,42 +126,34 @@ function CalcMain() {
         </div>
 
         <div id="cha-plus">
-          <button>N차 참 +</button>
-        </div>
-        
-        <div className="N-cha">
-          <div className="cha-info">
-            <h3>1차참</h3>
-            <div className="cha-sub">
-              <p>상세장소</p>
-              <p>시간</p>
-              <p>마감인원</p>
-            </div>
-          </div>
-          <div className="attendance-wrap">
-            <div className="attendance">
-              <p>키텔</p>
-            </div>
-            <p>1 / 14</p>
-          </div>
+          <button onClick={addCha}>N차 참 +</button>
+          <button onClick={removeCha}>N차 참 -</button>
         </div>
 
-        <div className="N-cha">
-          <div className="cha-info">
-            <h3>2차참</h3>
-            <div className="cha-sub">
-              <p>상세장소</p>
-              <p>시간</p>
-              <p>마감인원</p>
+        {chaList.map((cha, idx) => (
+          <div key={idx} className="N-cha">
+            <div className="cha-info">
+              <h3>{idx + 1}차참</h3>
+              <div className="cha-sub">
+                <p>{cha.place || "상세장소"}</p>
+                <p>{cha.time || "시간"}</p>
+                <p>{cha.limit || "마감인원"}</p>
+              </div>
+            </div>
+            <div className="attendance-wrap">
+              <div className="attendance">
+                {cha.attendees.length ? (
+                  cha.attendees.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+                ) : (
+                  <p>참석자 없음</p>
+                )}
+              </div>
+              <p>
+                {cha.attendees.length} / {cha.limit || "-"}
+              </p>
             </div>
           </div>
-          <div className="attendance-wrap">
-            <div className="attendance">
-              <p>키텔</p>
-            </div>
-            <p>1 / 14</p>
-          </div>
-        </div>
+        ))}
       </div>
 
       <div className="calcMain-bottom"></div>
