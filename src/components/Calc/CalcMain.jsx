@@ -9,13 +9,67 @@ function CalcMain() {
   const { eventId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [chaList, setChaList] = useState([]);
   const [event, setEvent] = useState(location.state || null);
+  const [paidList, setPaidList] = useState([]); // ✅ 입금 완료
+  const [pendingList, setPendingList] = useState([]); // ✅ 입금 미완료
+  const [standByList, setStandByList] = useState([]); // ✅ 상보참
+  const [chaList, setChaList] = useState([]);
   const [loading, setLoading] = useState(!location.state);
 
+  // 🔢 총 인원 = 세 리스트 길이 합
+  const totalCount = new Set([...paidList, ...pendingList, ...standByList])
+    .size;
+
   useEffect(() => {
-    if (Array.isArray(event?.chas)) setChaList(event.chas);
+    if (!event) return;
+
+    setChaList(Array.isArray(event.chas) ? event.chas : []);
+    setPaidList(Array.isArray(event.paid) ? event.paid : []);
+    setPendingList(Array.isArray(event.pending) ? event.pending : []);
+    setStandByList(Array.isArray(event.standBy) ? event.standBy : []);
   }, [event]);
+
+  /* 1) 공통 util – message 인자를 추가 */
+  const appendPerson = async (list, setList, field, message) => {
+    const name = window.prompt(message);
+    if (!name) return;
+    if (list.includes(name)) return alert("이미 등록된 이름입니다.");
+
+    const next = [...list, name];
+    setList(next);
+
+    try {
+      await updateDoc(doc(db, "events", eventId), { [field]: next });
+    } catch (e) {
+      console.error(e);
+      alert("저장 실패");
+    }
+  };
+
+  /* 2) 버튼별 래퍼 */
+  const addPaidPerson = () =>
+    appendPerson(
+      paidList,
+      setPaidList,
+      "paid",
+      "입금 완료자 이름을 입력하세요."
+    );
+
+  const addPendingPerson = () =>
+    appendPerson(
+      pendingList,
+      setPendingList,
+      "pending",
+      "입금 미완료자 이름을 입력하세요."
+    );
+
+  const addStandByPerson = () =>
+    appendPerson(
+      standByList,
+      setStandByList,
+      "standBy",
+      "상보참 이름을 입력하세요."
+    );
 
   const addCha = async () => {
     if (chaList.length >= 7) {
@@ -105,44 +159,56 @@ function CalcMain() {
           <div className="cash-right">
             <div className="total-people">
               <p>총 인원 수</p>
-              <p>N 명</p>
+              <p>{totalCount} 명</p>
             </div>
             <div className="bar" />
             <div className="cash-done">
-              <button>입금 완료자 추가</button>
-              <button>입금 미완료자 추가</button>
-              <button>상보참 추가</button>
+              <button onClick={addPaidPerson}>입금 완료자 추가</button>
+              <button onClick={addPendingPerson}>입금 미완료자 추가</button>
+              <button onClick={addStandByPerson}>상보참 추가</button>
             </div>
           </div>
         </div>
 
+        {/* ✅ 입금 완료 */}
         <div className="cash-complete">
           <p>
-            입금 완료자 <b className="font-red">N명</b>
+            입금 완료자 <b className="font-red">{paidList.length}명</b>
           </p>
           <div className="person-list">
-            <p>키텔</p>
-            <p>이언</p>
+            {paidList.length ? (
+              paidList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+            ) : (
+              <p>없음</p>
+            )}
           </div>
         </div>
 
+        {/* ✅ 입금 미완료 */}
         <div className="cash-incomplete">
           <p>
-            입금 미완료자 <b className="font-red">N명</b>
+            입금 미완료자 <b className="font-red">{pendingList.length}명</b>
           </p>
           <div className="person-list">
-            <p>키텔</p>
-            <p>이언</p>
+            {pendingList.length ? (
+              pendingList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+            ) : (
+              <p>없음</p>
+            )}
           </div>
         </div>
 
+        {/* ✅ 상보참 */}
         <div className="standBy-people">
           <p>
-            상보참 <b className="font-red">N명</b>
+            상보참 <b className="font-red">{standByList.length}명</b>
           </p>
           <div className="standBy-list">
-            <p>키텔</p>
-            <p>이언</p>
+            {standByList.length ? (
+              standByList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+            ) : (
+              <p>없음</p>
+            )}
           </div>
         </div>
 
