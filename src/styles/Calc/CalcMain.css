@@ -19,11 +19,7 @@
 }
 
 .calcMain-wrap {
-  background: linear-gradient(
-    135deg,
-    var(--brand-50) 0%,
-    var(--brand-100) 100%
-  );
+  background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
   border-radius: var(--radius-md);
   padding: 20px 22px;
   margin: 12px;
@@ -226,7 +222,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: transform 0.2s, opacity 0.2s;
 }
 
 .cha-info {
@@ -251,22 +246,12 @@
   margin: 0;
 }
 
-.attendance-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.attendance {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  max-width: 140px;
-}
-
-.attendance p {
-  background: var(--gray-100);
-  padding: 2px 6px;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+.cha-place {
+  position: relative;
+  max-width: 16ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  outline: none;
 }

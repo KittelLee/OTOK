@@ -16,6 +16,17 @@ function AddChaModal({ onClose, onConfirm }) {
       return;
     }
 
+    if (!/https?:\/\//i.test(link)) {
+      alert("‘장소 링크’는 http:// 또는 https:// 로 시작해야 합니다.");
+      return;
+    }
+
+    const num = Number(limit);
+    if (Number.isNaN(num) || num < 1 || num > 99) {
+      alert("마감 인원은 1 ~ 99 사이 숫자만 입력하세요.");
+      return;
+    }
+
     onConfirm({
       place: place.trim(),
       time: dayjs(datetime).format("YYYY.MM.DD HH:mm"),
@@ -41,10 +52,12 @@ function AddChaModal({ onClose, onConfirm }) {
       <label>
         장소 링크
         <input
-          type="text"
+          type="url"
+          pattern="https?://.*"
           value={link}
           onChange={(e) => setLink(e.target.value)}
-          placeholder="장소(네이버 지도 or 카카오 지도)링크를 입력하세요"
+          placeholder="http(s):// 로 시작하는 지도 링크"
+          required
         />
       </label>
 
@@ -58,13 +71,15 @@ function AddChaModal({ onClose, onConfirm }) {
       </label>
 
       <label>
-        마감인원
+        마감 인원
         <input
           type="number"
           min="1"
+          max="99"
           value={limit}
           onChange={(e) => setLimit(e.target.value)}
-          placeholder="숫자입력"
+          placeholder="1~99"
+          required
         />
       </label>
 

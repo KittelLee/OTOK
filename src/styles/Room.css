@@ -1,6 +1,7 @@
 .room-wrap {
   display: flex;
   flex-direction: column;
+  background-image: url(../assets/imgs/deco.png);
 }
 
 .room-wrap p:first-child {

@@ -42,6 +42,13 @@ function CalcAddModal({ onSubmit }) {
       return;
     }
 
+    if (!/https?:\/\//i.test(link)) {
+      toast.error(
+        "정산방 카톡링크는 http:// 또는 https:// 로 시작해야 합니다."
+      );
+      return;
+    }
+
     onSubmit({
       title,
       fee,
@@ -158,10 +165,12 @@ function CalcAddModal({ onSubmit }) {
       <div className="form-field">
         <label>정산방 카톡링크</label>
         <input
-          type="text"
+          type="url"
+          pattern="https?://.*"
           value={link}
           onChange={(e) => setLink(e.target.value)}
-          placeholder="카톡링크를 여기에 입력하세요"
+          placeholder="http(s):// 로 시작하는 정산방 링크를 여기에 입력"
+          required
         />
       </div>
 

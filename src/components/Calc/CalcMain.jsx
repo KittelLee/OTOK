@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
+import useToolTip from "../../hooks/useToolTip";
 import dayjs from "dayjs";
 import ModalForm from "../../common/Modal/ModalForm";
 import AddChaModal from "../Modal/AddChaModal";
@@ -18,6 +19,8 @@ function CalcMain() {
   const [chaList, setChaList] = useState([]);
   const [loading, setLoading] = useState(!location.state);
   const [showAddChaModal, setShowAddChaModal] = useState(false);
+
+  const { tipNode, bind } = useToolTip();
 
   // 🔢 총 인원 = 세 리스트 길이 합
   const totalCount = new Set([...paidList, ...pendingList, ...standByList])
@@ -229,20 +232,21 @@ function CalcMain() {
               <div className="cha-info">
                 <h3>{idx + 1}차참</h3>
                 <div className="cha-sub">
-                  <p>{cha.place || "상세장소"}</p>
+                  <p className="cha-place" {...bind(cha.place || "")}>
+                    {cha.place || "상세장소"}
+                  </p>
                   {cha.link && (
                     <a
                       href={cha.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      title="지도/카톡 링크 새창"
                     >
                       장소링크
                     </a>
                   )}
                   <p>
                     {cha.time
-                      ? dayjs(cha.time).format("YYYY년 M월 D일 A h:mm")
+                      ? dayjs(cha.time).format("M월 D일 A h:mm")
                       : "시간"}
                   </p>
                 </div>
@@ -250,8 +254,12 @@ function CalcMain() {
               <p>
                 {cha.attendees.length}명 / {cha.limit || "-"}명
               </p>
+              <div className="attendance-list">
+                <a href="#">+</a>
+              </div>
             </div>
           ))}
+          {tipNode}
         </div>
 
         <div className="calcMain-bottom"></div>
