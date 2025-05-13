@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import dayjs from "dayjs";
+import AddChaModal from "../Modal/AddChaModal";
 import "../../styles/Calc/CalcMain.css";
 
 function CalcMain() {
@@ -15,6 +16,7 @@ function CalcMain() {
   const [standByList, setStandByList] = useState([]); // ✅ 상보참
   const [chaList, setChaList] = useState([]);
   const [loading, setLoading] = useState(!location.state);
+  const [showAddChaModal, setShowAddChaModal] = useState(false);
 
   // 🔢 총 인원 = 세 리스트 길이 합
   const totalCount = new Set([...paidList, ...pendingList, ...standByList])
@@ -71,15 +73,13 @@ function CalcMain() {
       "상보참 이름을 입력하세요."
     );
 
-  const addCha = async () => {
-    if (chaList.length >= 7) {
-      alert("최대 7차까지만 추가할 수 있습니다.");
-      return;
-    }
-    const next = [
-      ...chaList,
-      { place: "", time: "", limit: "", attendees: [] },
-    ];
+  const openAddChaModal = () => {
+    if (chaList.length >= 7) return alert("최대 7차까지만 추가할 수 있습니다.");
+    setShowAddChaModal(true);
+  };
+
+  const confirmAddCha = async (newCha) => {
+    const next = [...chaList, newCha];
     setChaList(next);
     try {
       await updateDoc(doc(db, "events", eventId), { chas: next });
@@ -142,109 +142,118 @@ function CalcMain() {
     : fmt(event.start);
 
   return (
-    <section className="calcMain-wrap">
-      <div className="calcMain-top">
-        <h1>{event.title}</h1>
-        <p>일시 : {period}</p>
-        <p>위치 : {event.place}</p>
-        <p>벙주 : {event.host}</p>
-        <p>정산방 카톡링크 : {event.link}</p>
-        <div className="cash-wrap">
-          <div className="cash-left">
-            <p>선입금</p>
-            <p>{event.bank}</p>
-            <p>{event.fee}</p>
-            <button onClick={handleCopyAccount}>계좌번호 복사</button>
-          </div>
-          <div className="cash-right">
-            <div className="total-people">
-              <p>총 인원 수</p>
-              <p>{totalCount} 명</p>
+    <>
+      <section className="calcMain-wrap">
+        <div className="calcMain-top">
+          <h1>{event.title}</h1>
+          <p>일시 : {period}</p>
+          <p>위치 : {event.place}</p>
+          <p>벙주 : {event.host}</p>
+          <p>정산방 카톡링크 : {event.link}</p>
+          <div className="cash-wrap">
+            <div className="cash-left">
+              <p>선입금</p>
+              <p>{event.bank}</p>
+              <p>{event.fee}</p>
+              <button onClick={handleCopyAccount}>계좌번호 복사</button>
             </div>
-            <div className="bar" />
-            <div className="cash-done">
-              <button onClick={addPaidPerson}>입금 완료자 추가</button>
-              <button onClick={addPendingPerson}>입금 미완료자 추가</button>
-              <button onClick={addStandByPerson}>상보참 추가</button>
-            </div>
-          </div>
-        </div>
-
-        {/* ✅ 입금 완료 */}
-        <div className="cash-complete">
-          <p>
-            입금 완료자 <b className="font-red">{paidList.length}명</b>
-          </p>
-          <div className="person-list">
-            {paidList.length ? (
-              paidList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
-            ) : (
-              <p>없음</p>
-            )}
-          </div>
-        </div>
-
-        {/* ✅ 입금 미완료 */}
-        <div className="cash-incomplete">
-          <p>
-            입금 미완료자 <b className="font-red">{pendingList.length}명</b>
-          </p>
-          <div className="person-list">
-            {pendingList.length ? (
-              pendingList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
-            ) : (
-              <p>없음</p>
-            )}
-          </div>
-        </div>
-
-        {/* ✅ 상보참 */}
-        <div className="standBy-people">
-          <p>
-            상보참 <b className="font-red">{standByList.length}명</b>
-          </p>
-          <div className="standBy-list">
-            {standByList.length ? (
-              standByList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
-            ) : (
-              <p>없음</p>
-            )}
-          </div>
-        </div>
-
-        <div id="cha-plus">
-          <button onClick={addCha}>N차 참 +</button>
-          <button onClick={removeCha}>N차 참 -</button>
-        </div>
-
-        {chaList.map((cha, idx) => (
-          <div key={idx} className="N-cha">
-            <div className="cha-info">
-              <h3>{idx + 1}차참</h3>
-              <div className="cha-sub">
-                <p>{cha.place || "상세장소"}</p>
-                <p>{cha.time || "시간"}</p>
-                <p>{cha.limit || "마감인원"}</p>
+            <div className="cash-right">
+              <div className="total-people">
+                <p>총 인원 수</p>
+                <p>{totalCount} 명</p>
+              </div>
+              <div className="bar" />
+              <div className="cash-done">
+                <button onClick={addPaidPerson}>입금 완료자 추가</button>
+                <button onClick={addPendingPerson}>입금 미완료자 추가</button>
+                <button onClick={addStandByPerson}>상보참 추가</button>
               </div>
             </div>
-            <div className="attendance-wrap">
-              <div className="attendance">
-                {cha.attendees.length ? (
-                  cha.attendees.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
-                ) : (
-                  <p>참석자 없음</p>
-                )}
-              </div>
-              <p>
-                {cha.attendees.length} / {cha.limit || "-"}
-              </p>
+          </div>
+
+          {/* ✅ 입금 완료 */}
+          <div className="cash-complete">
+            <p>
+              입금 완료자 <b className="font-red">{paidList.length}명</b>
+            </p>
+            <div className="person-list">
+              {paidList.length ? (
+                paidList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+              ) : (
+                <p>없음</p>
+              )}
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="calcMain-bottom"></div>
-    </section>
+          {/* ✅ 입금 미완료 */}
+          <div className="cash-incomplete">
+            <p>
+              입금 미완료자 <b className="font-red">{pendingList.length}명</b>
+            </p>
+            <div className="person-list">
+              {pendingList.length ? (
+                pendingList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+              ) : (
+                <p>없음</p>
+              )}
+            </div>
+          </div>
+
+          {/* ✅ 상보참 */}
+          <div className="standBy-people">
+            <p>
+              상보참 <b className="font-red">{standByList.length}명</b>
+            </p>
+            <div className="standBy-list">
+              {standByList.length ? (
+                standByList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+              ) : (
+                <p>없음</p>
+              )}
+            </div>
+          </div>
+
+          <div id="cha-plus">
+            <button onClick={openAddChaModal}>N차 참 +</button>
+            <button onClick={removeCha}>N차 참 -</button>
+          </div>
+
+          {chaList.map((cha, idx) => (
+            <div key={idx} className="N-cha">
+              <div className="cha-info">
+                <h3>{idx + 1}차참</h3>
+                <div className="cha-sub">
+                  <p>{cha.place || "상세장소"}</p>
+                  <p>{cha.time || "시간"}</p>
+                  <p>{cha.limit || "마감인원"}</p>
+                </div>
+              </div>
+              <div className="attendance-wrap">
+                <div className="attendance">
+                  {cha.attendees.length ? (
+                    cha.attendees.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+                  ) : (
+                    <p>참석자 없음</p>
+                  )}
+                </div>
+                <p>
+                  {cha.attendees.length} / {cha.limit || "-"}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="calcMain-bottom"></div>
+      </section>
+
+      {showAddChaModal && (
+        <AddChaModal
+          onClose={() => setShowAddChaModal(false)}
+          onConfirm={confirmAddCha}
+        />
+      )}
+    </>
   );
 }
 

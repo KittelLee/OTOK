@@ -1,0 +1,32 @@
+.addChaModal-wrap {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.addChaModal-info {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 320px;
+}
+.addChaModal-info h2 {
+  margin-bottom: 16px;
+}
+.addChaModal-info label {
+  display: block;
+  margin-bottom: 12px;
+}
+.addChaModal-info input {
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 4px;
+}
+.btn-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
