@@ -150,6 +150,37 @@ function CalcMain() {
     ? `${fmt(event.start)} ~ ${fmt(event.end)}`
     : fmt(event.start);
 
+  const updateChaAttendees = async (chaIndex, nextAttendees) => {
+    setChaList((prev) =>
+      prev.map((c, i) =>
+        i === chaIndex ? { ...c, attendees: nextAttendees } : c
+      )
+    );
+
+    try {
+      const next = chaList.map((c, i) =>
+        i === chaIndex ? { ...c, attendees: nextAttendees } : c
+      );
+      await updateDoc(doc(db, "events", eventId), { chas: next });
+    } catch (e) {
+      console.error(e);
+      alert("저장 실패");
+    }
+  };
+
+  const addChaAttendee = (chaIdx) => {
+    const cha = chaList[chaIdx];
+    const name = window.prompt(`${chaIdx + 1}차참 참석자 이름을 입력하세요.`);
+    if (!name) return;
+
+    if (cha.attendees.includes(name)) return alert("이미 등록된 이름입니다.");
+
+    if (cha.limit && cha.attendees.length >= cha.limit)
+      return alert("정원이 모두 찼습니다.");
+
+    updateChaAttendees(chaIdx, [...cha.attendees, name]);
+  };
+
   return (
     <>
       <section className="calcMain-wrap">
@@ -229,36 +260,44 @@ function CalcMain() {
 
           {chaList.map((cha, idx) => (
             <div key={idx} className="N-cha">
-              <div className="cha-info">
+              <div className="info-row">
                 <h3>{idx + 1}차참</h3>
-                <div className="cha-sub">
-                  <p className="cha-place" {...bind(cha.place || "")}>
-                    {cha.place || "상세장소"}
-                  </p>
-                  {cha.link && (
-                    <a
-                      href={cha.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      장소링크
-                    </a>
-                  )}
-                  <p>
-                    {cha.time
-                      ? dayjs(cha.time).format("M월 D일 A h:mm")
-                      : "시간"}
-                  </p>
-                </div>
+                <p className="cha-place" {...bind(cha.place || "")}>
+                  {cha.place || "상세장소"}
+                </p>
+                {cha.link && (
+                  <a href={cha.link} target="_blank" rel="noopener noreferrer">
+                    장소링크
+                  </a>
+                )}
+                <p>
+                  {cha.time ? dayjs(cha.time).format("M월 D일 A h:mm") : "시간"}
+                </p>
+                <p>
+                  {cha.attendees.length}명 / {cha.limit || "-"}명
+                </p>
               </div>
-              <p>
-                {cha.attendees.length}명 / {cha.limit || "-"}명
-              </p>
-              <div className="attendance-list">
-                <a href="#">+</a>
+
+              <div className="attendance-row">
+                <button
+                  className="add-attendee"
+                  onClick={() => addChaAttendee(idx)}
+                  title="참석자 추가"
+                >
+                  +
+                </button>
+
+                <div className="attendees">
+                  {cha.attendees.length ? (
+                    cha.attendees.map((n, i) => <span key={i}>{n}</span>)
+                  ) : (
+                    <span className="empty">참석자 없음</span>
+                  )}
+                </div>
               </div>
             </div>
           ))}
+
           {tipNode}
         </div>
 

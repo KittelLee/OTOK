@@ -220,38 +220,70 @@
   padding: 12px 14px;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cha-info {
-  display: flex;
-  align-items: center;
-}
-
-.cha-info h3 {
-  font-size: 1rem;
-  margin: 0;
-}
-
-.cha-sub {
-  display: flex;
-  gap: 10px;
-  margin-left: 12px;
-  font-size: 0.9rem;
-  color: var(--gray-700);
-}
-
-.cha-sub p {
-  margin: 0;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .cha-place {
-  position: relative;
   max-width: 16ch;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
   outline: none;
+  position: relative;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--gray-700);
+}
+.info-row h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.attendance-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.add-attendee {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.add-attendee:hover {
+  opacity: 0.85;
+}
+
+.attendees {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.attendees span {
+  background: var(--gray-100);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.attendees .empty {
+  opacity: 0.6;
 }
