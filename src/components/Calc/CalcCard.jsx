@@ -19,6 +19,15 @@ function formatKoreanDateTime(startISO, endISO) {
 
 function CalcCard({ index, event, onDelete, user }) {
   const { id, title, place, start, end, createdBy } = event;
+
+  /* ✅ 참석·상보참 인원 계산 */
+  const paid = Array.isArray(event.paid) ? event.paid : [];
+  const pending = Array.isArray(event.pending) ? event.pending : [];
+  const standBy = Array.isArray(event.standBy) ? event.standBy : [];
+
+  const attendCount = new Set([...paid, ...pending]).size; // 중복 제거
+  const standByCount = standBy.length;
+
   const isOwner = user && user.uid === createdBy;
 
   return (
@@ -56,7 +65,9 @@ function CalcCard({ index, event, onDelete, user }) {
         </div>
         <div className="card-bottom">
           <div className="card-person">
-            <p>N명 참석, N명 상보참</p>
+            <p>
+              {attendCount}명 참석, {standByCount}명 상보참
+            </p>
           </div>
         </div>
       </section>
@@ -75,6 +86,9 @@ CalcCard.propTypes = {
     start: PropTypes.string.isRequired,
     end: PropTypes.string,
     createdBy: PropTypes.string,
+    paid: PropTypes.array,
+    pending: PropTypes.array,
+    standBy: PropTypes.array,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
   user: PropTypes.shape({

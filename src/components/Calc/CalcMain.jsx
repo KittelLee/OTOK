@@ -92,6 +92,11 @@ function CalcMain() {
 
   const removeCha = async () => {
     if (!chaList.length) return;
+
+    const lastIdx = chaList.length;
+    const ok = window.confirm(`정말 ${lastIdx}차참 정보를 삭제할까요?`);
+    if (!ok) return;
+
     const next = chaList.slice(0, -1);
     setChaList(next);
     try {
@@ -225,22 +230,26 @@ function CalcMain() {
                 <h3>{idx + 1}차참</h3>
                 <div className="cha-sub">
                   <p>{cha.place || "상세장소"}</p>
-                  <p>{cha.time || "시간"}</p>
-                  <p>{cha.limit || "마감인원"}</p>
-                </div>
-              </div>
-              <div className="attendance-wrap">
-                <div className="attendance">
-                  {cha.attendees.length ? (
-                    cha.attendees.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
-                  ) : (
-                    <p>참석자 없음</p>
+                  {cha.link && (
+                    <a
+                      href={cha.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="지도/카톡 링크 새창"
+                    >
+                      장소링크
+                    </a>
                   )}
+                  <p>
+                    {cha.time
+                      ? dayjs(cha.time).format("YYYY년 M월 D일 A h:mm")
+                      : "시간"}
+                  </p>
                 </div>
-                <p>
-                  {cha.attendees.length} / {cha.limit || "-"}
-                </p>
               </div>
+              <p>
+                {cha.attendees.length}명 / {cha.limit || "-"}명
+              </p>
             </div>
           ))}
         </div>

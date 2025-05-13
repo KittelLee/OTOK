@@ -5,12 +5,13 @@ import "../../styles/Modal/AddChaModal.css";
 
 function AddChaModal({ onClose, onConfirm }) {
   const [place, setPlace] = useState("");
+  const [link, setLink] = useState("");
   const [datetime, setDatetime] = useState("");
   const [limit, setLimit] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!place || !datetime || !limit) {
+    if (!place || !link || !datetime || !limit) {
       alert("세 항목을 모두 입력해 주세요.");
       return;
     }
@@ -19,6 +20,7 @@ function AddChaModal({ onClose, onConfirm }) {
       place: place.trim(),
       time: dayjs(datetime).format("YYYY.MM.DD HH:mm"),
       limit: Number(limit),
+      link: link.trim(),
       attendees: [],
     });
     onClose();
@@ -33,6 +35,16 @@ function AddChaModal({ onClose, onConfirm }) {
           value={place}
           onChange={(e) => setPlace(e.target.value)}
           placeholder="예) 건대입구역 근처 와포2호점"
+        />
+      </label>
+
+      <label>
+        장소 링크
+        <input
+          type="text"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="장소(네이버 지도 or 카카오 지도)링크를 입력하세요"
         />
       </label>
 
