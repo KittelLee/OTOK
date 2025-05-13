@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import dayjs from "dayjs";
+import ModalForm from "../../common/Modal/ModalForm";
 import AddChaModal from "../Modal/AddChaModal";
 import "../../styles/Calc/CalcMain.css";
 
@@ -247,12 +248,15 @@ function CalcMain() {
         <div className="calcMain-bottom"></div>
       </section>
 
-      {showAddChaModal && (
+      <ModalForm
+        isOpen={showAddChaModal}
+        onClose={() => setShowAddChaModal(false)}
+      >
         <AddChaModal
           onClose={() => setShowAddChaModal(false)}
           onConfirm={confirmAddCha}
         />
-      )}
+      </ModalForm>
     </>
   );
 }
