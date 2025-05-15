@@ -35,7 +35,7 @@
 
 .calcAddModal-wrap h2 {
   text-align: center;
-  margin-bottom: 14px;
+  margin-bottom: 4px;
 }
 
 .form-field {
@@ -78,7 +78,7 @@
 }
 
 .form-button {
-  margin-top: 12px;
+  margin: 8px 2px 4px 2px;
   display: flex;
   justify-content: center;
 }
