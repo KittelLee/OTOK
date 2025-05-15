@@ -4,6 +4,11 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import useToolTip from "../../hooks/useToolTip";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 import ModalForm from "../../common/Modal/ModalForm";
 import AddChaModal from "../Modal/AddChaModal";
 import "../../styles/Calc/CalcMain.css";
@@ -82,9 +87,17 @@ function CalcMain() {
     setShowAddChaModal(true);
   };
 
-  const confirmAddCha = async (newCha) => {
+  const confirmAddCha = async (rawCha) => {
+    const isoTime = rawCha.time
+      ? dayjs(rawCha.time?.seconds ? rawCha.time.toDate() : rawCha.time)
+          .tz("Asia/Seoul")
+          .format("YYYY-MM-DDTHH:mm:ss.SSSZ")
+      : null;
+
+    const newCha = { ...rawCha, time: isoTime };
     const next = [...chaList, newCha];
     setChaList(next);
+
     try {
       await updateDoc(doc(db, "events", eventId), { chas: next });
     } catch (e) {
