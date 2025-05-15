@@ -6,12 +6,26 @@ import useToolTip from "../../hooks/useToolTip";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
+dayjs.extend(customParseFormat);
 import ModalForm from "../../common/Modal/ModalForm";
 import AddChaModal from "../Modal/AddChaModal";
 import "../../styles/Calc/CalcMain.css";
+
+const safeDay = (input) => {
+  if (!input) return null;
+
+  if (typeof input === "object" && input?.toDate) return dayjs(input.toDate());
+  if (input?.seconds) return dayjs.unix(input.seconds);
+
+  const d1 = dayjs(input);
+  if (d1.isValid()) return d1;
+
+  const d2 = dayjs(input, "YYYY-MM-DD HH:mm");
+  return d2.isValid() ? d2 : null;
+};
 
 function CalcMain() {
   const { eventId } = useParams();
@@ -158,7 +172,9 @@ function CalcMain() {
   if (loading) return <p style={{ padding: 24 }}>로딩 중…</p>;
   if (!event) return null;
 
-  const fmt = (iso) => dayjs(iso).format("YYYY년 M월 D일 (dd) A h:mm");
+  const fmt = (val) =>
+    safeDay(val)?.format("YYYY년 M월 D일 (dd) A h:mm") ?? "날짜";
+
   const period = event.end
     ? `${fmt(event.start)} ~ ${fmt(event.end)}`
     : fmt(event.start);
@@ -283,9 +299,7 @@ function CalcMain() {
                     장소링크
                   </a>
                 )}
-                <p>
-                  {cha.time ? dayjs(cha.time).format("M월 D일 A h:mm") : "시간"}
-                </p>
+                <p>{safeDay(cha.time)?.format("M월 D일 A h:mm") ?? "시간"}</p>
                 <p>
                   {cha.attendees.length}명 / {cha.limit || "-"}명
                 </p>
