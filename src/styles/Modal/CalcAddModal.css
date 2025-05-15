@@ -21,10 +21,10 @@
     var(--brand-50) 0%,
     var(--brand-100) 100%
   );
-  width: 340px;
+  width: 320px;
   max-width: 90vw;
   min-height: 420px;
-  padding: 10px;
+  padding: 4px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   color: var(--gray-700);
