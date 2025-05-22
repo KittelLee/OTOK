@@ -2,6 +2,7 @@ import room1 from "../assets/imgs/room1.jpeg";
 import room2 from "../assets/imgs/room2.jpeg";
 import room3 from "../assets/imgs/room3.png";
 import room4 from "../assets/imgs/room4.jpeg";
+import room5 from "../assets/imgs/room5.jpeg";
 import "../styles/Room.css";
 
 function Room() {
@@ -43,8 +44,8 @@ function Room() {
 
         <div className="room-bottom">
           <div className="room-info">
-            <a href="#">
-              <img src="#" />
+            <a href="https://open.kakao.com/o/gfDDjKxh">
+              <img src={room5} />
               <p>5방 링크</p>
             </a>
           </div>
