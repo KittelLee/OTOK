@@ -287,3 +287,31 @@
 .attendees .empty {
   opacity: 0.6;
 }
+
+/*추가된 코드 */
+
+.cash-complete,
+.cash-incomplete,
+.standBy-people {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px; /* p와 리스트 사이 약간 여백 */
+}
+
+/* 2. 왼쪽 레이블 고정 */
+.cash-complete > p:first-child,
+.cash-incomplete > p:first-child,
+.standBy-people > p:first-child {
+  flex-shrink: 0; /* 절대 줄어들지 않음 */
+  white-space: nowrap; /* 줄 바꿈 금지 */
+}
+
+/* 3. 오른쪽 리스트가 남은 공간에서 줄 바꿈 */
+.person-list,
+.standBy-list {
+  display: flex; /* 이미 flex-wrap 있음 */
+  flex: 1 1 0; /* 가변 너비로 */
+  min-width: 0; /* flex-shrink가 동작하도록 */
+  flex-wrap: wrap; /* 항목들이 줄 바꿈 */
+  gap: 4px;
+}
