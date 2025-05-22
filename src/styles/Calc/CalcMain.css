@@ -45,7 +45,7 @@
 }
 
 .cash-left {
-  width: 170px;
+  width: 100px;
   background: #fff;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
