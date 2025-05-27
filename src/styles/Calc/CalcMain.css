@@ -259,15 +259,22 @@
 }
 
 .info-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 32px minmax(80px, 1fr) 60px 58px 64px;
+  gap: 8px;
   align-items: center;
-  gap: 10px;
+  text-align: center;
   font-size: 0.9rem;
-  color: var(--gray-700);
+  line-height: 1.45;
 }
+
 .info-row h3 {
   font-size: 1rem;
   margin: 0;
+}
+
+.info-row p:last-child {
+  font-size: 14px;
 }
 
 .attendance-row {
