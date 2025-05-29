@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   collection,
@@ -10,6 +10,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db, auth } from "../../firebaseConfig";
+import { toast } from "react-toastify";
 import CalcCard from "../components/Calc/CalcCard";
 import CalcModal from "../components/Modal/CalcAddModal";
 import ModalForm from "../common/Modal/ModalForm";
@@ -20,6 +21,7 @@ function Calc({ user }) {
   // 모달 & 목록 state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   // 🔒 로그인된 뒤에만 구독
   useEffect(() => {
@@ -51,6 +53,16 @@ function Calc({ user }) {
     await deleteDoc(doc(db, "events", id));
   }, []);
 
+  const enterEvent = (ev) => {
+    const pw = window.prompt("비밀번호 4자리를 입력하세요");
+    if (!pw) return;
+    if (pw === ev.password) {
+      navigate(`/calcMain/${ev.id}`, { state: ev });
+    } else {
+      toast.error("비밀번호가 일치하지 않습니다.");
+    }
+  };
+
   return (
     <>
       <section className="calc-wrap">
@@ -63,10 +75,22 @@ function Calc({ user }) {
 
         <div>
           {events.map((ev, idx) => (
-            <Link
+            // <Link
+            //   key={ev.id}
+            //   to={`/calcMain/${ev.id}`}
+            //   style={{ textDecoration: "none", color: "inherit" }}
+            // >
+            //   <CalcCard
+            //     index={idx + 1}
+            //     event={ev}
+            //     onDelete={deleteEvent}
+            //     user={user}
+            //   />
+            // </Link>
+            <div
               key={ev.id}
-              to={`/calcMain/${ev.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
+              onClick={() => enterEvent(ev)}
+              style={{ cursor: "pointer" }}
             >
               <CalcCard
                 index={idx + 1}
@@ -74,12 +98,12 @@ function Calc({ user }) {
                 onDelete={deleteEvent}
                 user={user}
               />
-            </Link>
+            </div>
           ))}
         </div>
       </section>
       <ModalForm isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <CalcModal onSubmit={addEvent} />
+        <CalcModal user={user} onSubmit={addEvent} />
       </ModalForm>
     </>
   );

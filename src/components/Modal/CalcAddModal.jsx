@@ -4,17 +4,18 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import "../../styles/Modal/CalcAddModal.css";
 
-function CalcAddModal({ onSubmit }) {
+function CalcAddModal({ user, onSubmit }) {
   const now = dayjs().format("YYYY-MM-DDTHH:mm");
 
   const [title, setTitle] = useState("");
   const [fee, setFee] = useState("없음");
-  const [host, setHost] = useState("");
+  const [host] = useState(user?.displayName ?? "");
   const [bank, setBank] = useState("카카오페이");
   const [account, setAccount] = useState("");
   const [start, setStart] = useState(now);
   const [place, setPlace] = useState("");
   const [link, setLink] = useState("");
+  const [password, setPassword] = useState("");
 
   // ① bank가 카카오페이일 때 account 입력창 초기화
   useEffect(() => {
@@ -30,7 +31,7 @@ function CalcAddModal({ onSubmit }) {
 
     if (
       !title ||
-      !host ||
+      !password.match(/^\d{4}$/) ||
       (!isKakaoPay && !account) ||
       !start ||
       !place ||
@@ -56,6 +57,7 @@ function CalcAddModal({ onSubmit }) {
       start,
       place,
       link,
+      password,
     });
 
     toast.success("벙이 성공적으로 생성되었습니다!");
@@ -86,17 +88,6 @@ function CalcAddModal({ onSubmit }) {
             <option key={v}>{v.toLocaleString()}원</option>
           ))}
         </select>
-      </div>
-
-      <div className="form-field">
-        <label>벙주 입력</label>
-        <input
-          type="text"
-          value={host}
-          onChange={(e) => setHost(e.target.value)}
-          placeholder="벙주를 입력하세요"
-          required
-        />
       </div>
 
       <div className="form-field">
@@ -162,6 +153,19 @@ function CalcAddModal({ onSubmit }) {
         />
       </div>
 
+      <div className="form-field">
+        <label>비밀번호 (4자리 숫자)</label>
+        <input
+          type="password"
+          pattern="\d{4}"
+          maxLength={4}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="0000"
+          required
+        />
+      </div>
+
       <div className="form-button">
         <button>벙 만들기</button>
       </div>
@@ -173,4 +177,5 @@ export default CalcAddModal;
 
 CalcAddModal.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  user: PropTypes.object,
 };
