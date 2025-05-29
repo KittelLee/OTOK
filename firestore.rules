@@ -3,23 +3,33 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    /* ───────── events 컬렉션 ───────── */
-    match /events/{eventId} {
-      // 읽기는 로그인만 되어 있으면 OK
-      allow read: if request.auth != null;
-
-      // 생성·수정은 로그인만 확인
-      allow create, update: if request.auth != null;
-
-      // 삭제는 만든 사람만
-      allow delete: if request.auth != null
-                    && request.auth.uid == resource.data.createdBy;
+    /* ---------- 관리자 판별 헬퍼 ---------- */
+    function isAdmin() {
+      return request.auth.uid == "zWWIhPN5tOf7eF7dZj3F6wWqSfU2";
+      // 여러 명이면: return request.auth.uid in [ "UID1", "UID2" ];
     }
 
-    /* ───────── 기타 문서 ───────── */
+    /* ---------- users 컬렉션 ---------- */
+    match /users/{userId} {
+      /* ▶ 누구나 읽기(닉네임 중복 검사용) */
+      allow read: if true;
+
+      /* ▶ 생성·수정·삭제 = 본인 또는 관리자 */
+      allow create, update, delete: if request.auth != null
+                                    && (isAdmin() || request.auth.uid == userId);
+    }
+
+    /* ---------- events 컬렉션 ----------
+       approved == true 사용자만 접근 */
+    match /events/{eventId} {
+      allow read, write: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid))
+             .data.approved == true;
+    }
+
+    /* ---------- 그 외 전부 차단 ---------- */
     match /{document=**} {
-      // 필요하다면 다른 컬렉션 규칙을 여기에…
-      allow read, write: if false;  // 기본은 차단
+      allow read, write: if false;
     }
   }
 }

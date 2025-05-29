@@ -13,7 +13,6 @@ function CalcAddModal({ onSubmit }) {
   const [bank, setBank] = useState("카카오페이");
   const [account, setAccount] = useState("");
   const [start, setStart] = useState(now);
-  const [end, setEnd] = useState("");
   const [place, setPlace] = useState("");
   const [link, setLink] = useState("");
 
@@ -34,7 +33,6 @@ function CalcAddModal({ onSubmit }) {
       !host ||
       (!isKakaoPay && !account) ||
       !start ||
-      !end ||
       !place ||
       !link
     ) {
@@ -56,7 +54,6 @@ function CalcAddModal({ onSubmit }) {
       bank,
       account,
       start,
-      end,
       place,
       link,
     });
@@ -140,15 +137,6 @@ function CalcAddModal({ onSubmit }) {
           value={start}
           onChange={(e) => setStart(e.target.value)}
           required
-        />
-      </div>
-
-      <div className="form-field">
-        <label>벙 종료 시간</label>
-        <input
-          type="datetime-local"
-          value={end}
-          onChange={(e) => setEnd(e.target.value)}
         />
       </div>
 

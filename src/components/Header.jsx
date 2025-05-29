@@ -53,14 +53,14 @@ function Header({ user }) {
               </Link>
             </li>
             <li>
-              <Link to="/lotteryPrediction" onClick={handleLinkClick}>
-                복권예측
+              <Link to="/suggestion" onClick={handleLinkClick}>
+                익명 건의함
               </Link>
             </li>
             {user ? (
               <li>
                 <span className="user-display" onClick={handleLogout}>
-                  {user.displayName || user.email}
+                  {user.displayName}
                 </span>
               </li>
             ) : (

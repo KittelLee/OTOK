@@ -175,9 +175,7 @@ function CalcMain() {
   const fmt = (val) =>
     safeDay(val)?.format("YYYY년 M월 D일 (dd) A h:mm") ?? "날짜";
 
-  const period = event.end
-    ? `${fmt(event.start)} ~ ${fmt(event.end)}`
-    : fmt(event.start);
+  const period = event.end ? `${fmt(event.start)}` : fmt(event.start);
 
   const updateChaAttendees = async (chaIndex, nextAttendees) => {
     setChaList((prev) =>
@@ -215,7 +213,7 @@ function CalcMain() {
       <section className="calcMain-wrap">
         <div className="calcMain-top">
           <h1>{event.title}</h1>
-          <p>일시 : {period}</p>
+          <p>시작 일시 : {period}</p>
           <p>위치 : {event.place}</p>
           <p>벙주 : {event.host}</p>
           <p>정산방 카톡링크 : {event.link}</p>
