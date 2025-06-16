@@ -1,0 +1,119 @@
+:root {
+  --brand-50: #fff7db;
+  --brand-100: #ffe8a0;
+  --brand-500: #f6c344;
+  --brand-accent: #ff7043;
+  --brand-accent-hover: #ff5722;
+
+  --gray-50: #f8f9fa;
+  --gray-100: #f1f3f5;
+  --gray-200: #e9ecef;
+  --gray-700: #495057;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.receipt-wrap {
+  background: linear-gradient(
+    135deg,
+    var(--brand-50) 0%,
+    var(--brand-100) 100%
+  );
+  width: 320px;
+  max-width: 90vw;
+  min-height: 310px;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  color: var(--gray-700);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.receipt-wrap h2 {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.receipt-wrap label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.receipt-wrap input {
+  margin-top: 4px;
+  width: 100%;
+  font-size: 0.95rem;
+  padding: 6px 8px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.receipt-wrap input[type="number"] {
+  height: 34px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.receipt-wrap input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--brand-accent);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.file-btn:hover,
+.file-btn:focus-visible {
+  background: var(--brand-accent-hover);
+}
+
+.file-btn:active {
+  transform: translateY(1px);
+}
+
+.form-button {
+  margin: 1px 2px 4px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-button button {
+  width: 100%;
+  height: 36px;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-500);
+  color: #fff;
+  transition: opacity 0.15s ease;
+}
+
+.form-button button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}

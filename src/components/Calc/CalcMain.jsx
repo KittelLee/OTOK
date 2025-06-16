@@ -12,6 +12,7 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 import ModalForm from "../../common/Modal/ModalForm";
 import AddChaModal from "../Modal/AddChaModal";
+import ReceiptModal from "../Modal/ReceiptModal";
 import "../../styles/Calc/CalcMain.css";
 
 const safeDay = (input) => {
@@ -38,6 +39,7 @@ function CalcMain() {
   const [chaList, setChaList] = useState([]);
   const [loading, setLoading] = useState(!location.state);
   const [showAddChaModal, setShowAddChaModal] = useState(false);
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
 
   const { tipNode, bind } = useToolTip();
 
@@ -208,6 +210,12 @@ function CalcMain() {
     updateChaAttendees(chaIdx, [...cha.attendees, name]);
   };
 
+  const openReceiptModal = () => setShowReceiptModal(true);
+
+  const confirmAddReceipt = async (newReceipt) => {
+    setShowReceiptModal(false);
+  };
+
   return (
     <>
       <section className="calcMain-wrap">
@@ -216,7 +224,9 @@ function CalcMain() {
           <p>시작 일시 : {period}</p>
           <p>위치 : {event.place}</p>
           <p>벙주 : {event.host}</p>
-          <p>정산방 카톡링크 : {event.link}</p>
+          <p>
+            정산방 카톡링크 : <a href={event.link}>{event.link}</a>
+          </p>
           <div className="cash-wrap">
             <div className="cash-left">
               <p>선입금</p>
@@ -280,7 +290,7 @@ function CalcMain() {
             </div>
           </div>
 
-          <div id="cha-plus">
+          <div className="cha-plus">
             <button onClick={openAddChaModal}>N차 참 +</button>
             <button onClick={removeCha}>N차 참 -</button>
           </div>
@@ -326,7 +336,32 @@ function CalcMain() {
           {tipNode}
         </div>
 
-        <div className="calcMain-bottom"></div>
+        <div className="calcHr" />
+
+        <div className="cha-plus">
+          <button onClick={openReceiptModal}>N차 정산 +</button>
+          <button onClick="#">N차 정산 -</button>
+        </div>
+
+        <div className="calcMain-bottom">
+          <div className="N-cha">
+            <div className="info-row">
+              <h3>1차참</h3>
+              <p>금액/인원수 = 인당:10,000원</p>
+              <p>영수증 사진</p>
+            </div>
+
+            <div className="attendance-row">
+              {/* <div className="attendees">
+                  {cha.attendees.length ? (
+                    cha.attendees.map((n, i) => <span key={i}>{n}</span>)
+                  ) : (
+                    <span className="empty">참석자 없음</span>
+                  )}
+                </div> */}
+            </div>
+          </div>
+        </div>
       </section>
 
       <ModalForm
@@ -336,6 +371,16 @@ function CalcMain() {
         <AddChaModal
           onClose={() => setShowAddChaModal(false)}
           onConfirm={confirmAddCha}
+        />
+      </ModalForm>
+
+      <ModalForm
+        isOpen={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+      >
+        <ReceiptModal
+          onClose={() => setShowReceiptModal(false)}
+          onConfirm={confirmAddReceipt}
         />
       </ModalForm>
     </>
