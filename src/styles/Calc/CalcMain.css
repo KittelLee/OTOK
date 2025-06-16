@@ -237,7 +237,8 @@
   cursor: not-allowed;
 }
 
-.N-cha {
+.N-cha,
+.N-settle {
   background: #fff;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -298,6 +299,7 @@
   justify-content: center;
   cursor: pointer;
 }
+
 .add-attendee:hover {
   opacity: 0.85;
 }
@@ -308,6 +310,7 @@
   gap: 6px;
   flex-wrap: wrap;
 }
+
 .attendees span {
   background: var(--gray-100);
   padding: 2px 8px;
@@ -315,6 +318,7 @@
   font-size: 0.8rem;
   white-space: nowrap;
 }
+
 .attendees .empty {
   opacity: 0.6;
 }
@@ -328,4 +332,33 @@
 
 .calcMain-bottom {
   margin-top: 10px;
+}
+
+.N-info-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.N-info-row h3 {
+  margin: 0;
+  text-align: center;
+}
+
+.receipt-view-btn {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background: var(--brand-500);
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.receipt-view-btn:hover {
+  opacity: 0.85;
 }

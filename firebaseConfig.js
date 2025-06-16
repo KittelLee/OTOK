@@ -1,10 +1,15 @@
 import { initializeApp } from "firebase/app";
 import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  getFirestore,
+} from "firebase/firestore";
+import {
   getAuth,
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -18,11 +23,21 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
+/* ─────────── Auth ─────────── */
+const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-const db = getFirestore(app);
+/* ─────────── Firestore (단 한 번) ─────────── */
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
+
+export const dbDefault = getFirestore(app);
+
+/* ─────────── Analytics ─────────── */
 const analytics = getAnalytics(app);
 
-export { auth, db, analytics };
+export { app, auth, analytics };

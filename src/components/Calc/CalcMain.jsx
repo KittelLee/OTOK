@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import useToolTip from "../../hooks/useToolTip";
 import dayjs from "dayjs";
@@ -37,10 +37,11 @@ function CalcMain() {
   const [pendingList, setPendingList] = useState([]); // ✅ 입금 미완료
   const [standByList, setStandByList] = useState([]); // ✅ 상보참
   const [chaList, setChaList] = useState([]);
+  const [receiptList, setReceiptList] = useState([]);
   const [loading, setLoading] = useState(!location.state);
   const [showAddChaModal, setShowAddChaModal] = useState(false);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
-
+  const [photoURL, setPhotoURL] = useState(null);
   const { tipNode, bind } = useToolTip();
 
   // 🔢 총 인원 = 세 리스트 길이 합
@@ -51,12 +52,12 @@ function CalcMain() {
     if (!event) return;
 
     setChaList(Array.isArray(event.chas) ? event.chas : []);
+    setReceiptList(Array.isArray(event.receipts) ? event.receipts : []);
     setPaidList(Array.isArray(event.paid) ? event.paid : []);
     setPendingList(Array.isArray(event.pending) ? event.pending : []);
     setStandByList(Array.isArray(event.standBy) ? event.standBy : []);
   }, [event]);
 
-  /* 1) 공통 util – message 인자를 추가 */
   const appendPerson = async (list, setList, field, message) => {
     const name = window.prompt(message);
     if (!name) return;
@@ -73,7 +74,6 @@ function CalcMain() {
     }
   };
 
-  /* 2) 버튼별 래퍼 */
   const addPaidPerson = () =>
     appendPerson(
       paidList,
@@ -154,22 +154,38 @@ function CalcMain() {
   };
 
   useEffect(() => {
-    if (event) return;
+    const ref = doc(db, "events", eventId);
+    let unSub = () => {};
 
-    const fetch = async () => {
-      try {
-        const snap = await getDoc(doc(db, "events", eventId));
-        if (!snap.exists()) {
-          alert("존재하지 않는 이벤트입니다.");
-          return navigate("/calc", { replace: true });
-        }
-        setEvent({ id: snap.id, ...snap.data() });
-      } finally {
-        setLoading(false);
-      }
+    const connect = () => {
+      unSub = onSnapshot(ref, (snap) => {
+        if (snap.exists()) setEvent({ id: snap.id, ...snap.data() });
+      });
     };
-    fetch();
-  }, [event, eventId, navigate]);
+
+    (async () => {
+      const snap = await getDoc(ref);
+      if (!snap.exists()) {
+        alert("존재하지 않는 이벤트입니다.");
+        navigate("/calc", { replace: true });
+        return;
+      }
+      setEvent({ id: snap.id, ...snap.data() });
+      setLoading(false);
+      connect();
+    })();
+
+    const visHandler = () => {
+      if (document.visibilityState === "hidden") unSub();
+      else connect();
+    };
+    document.addEventListener("visibilitychange", visHandler);
+
+    return () => {
+      document.removeEventListener("visibilitychange", visHandler);
+      unSub();
+    };
+  }, [eventId, navigate]);
 
   if (loading) return <p style={{ padding: 24 }}>로딩 중…</p>;
   if (!event) return null;
@@ -213,8 +229,18 @@ function CalcMain() {
   const openReceiptModal = () => setShowReceiptModal(true);
 
   const confirmAddReceipt = async (newReceipt) => {
-    setShowReceiptModal(false);
+    const next = [...receiptList, newReceipt];
+    setReceiptList(next);
+
+    try {
+      await updateDoc(doc(db, "events", eventId), { receipts: next });
+    } catch (e) {
+      console.error(e);
+      alert("저장 실패");
+    }
   };
+
+  const comma = (n) => n.toLocaleString("ko-KR");
 
   return (
     <>
@@ -344,23 +370,43 @@ function CalcMain() {
         </div>
 
         <div className="calcMain-bottom">
-          <div className="N-cha">
-            <div className="info-row">
-              <h3>1차참</h3>
-              <p>금액/인원수 = 인당:10,000원</p>
-              <p>영수증 사진</p>
-            </div>
+          {receiptList.map((r, idx) => {
+            const unit = Math.round(r.amount / r.people);
+            const attendees = chaList[idx]?.attendees ?? [];
 
-            <div className="attendance-row">
-              {/* <div className="attendees">
-                  {cha.attendees.length ? (
-                    cha.attendees.map((n, i) => <span key={i}>{n}</span>)
-                  ) : (
-                    <span className="empty">참석자 없음</span>
+            return (
+              <div className="N-settle" key={idx}>
+                <div className="N-info-row">
+                  <h3>{idx + 1}차 정산</h3>
+                  <p>
+                    총금액&nbsp;
+                    <b className="font-red">{comma(r.amount)}원</b> / {r.people}
+                    명 = 인당 <b className="font-red">{comma(unit)}원</b>
+                  </p>
+
+                  {r.photoURL && (
+                    <button
+                      type="button"
+                      className="receipt-view-btn"
+                      onClick={() => setPhotoURL(r.photoURL)}
+                    >
+                      영수증 보기
+                    </button>
                   )}
-                </div> */}
-            </div>
-          </div>
+                </div>
+
+                <div className="attendance-row">
+                  <div className="attendees">
+                    {attendees.length ? (
+                      attendees.map((n, i) => <span key={i}>{n}</span>)
+                    ) : (
+                      <span className="empty">참석자 없음</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -382,6 +428,22 @@ function CalcMain() {
           onClose={() => setShowReceiptModal(false)}
           onConfirm={confirmAddReceipt}
         />
+      </ModalForm>
+
+      <ModalForm isOpen={!!photoURL} onClose={() => setPhotoURL(null)}>
+        {photoURL && (
+          <img
+            src={photoURL}
+            alt="영수증 원본"
+            style={{
+              display: "block",
+              maxWidth: "90vw",
+              maxHeight: "80vh",
+              margin: "auto",
+              borderRadius: 8,
+            }}
+          />
+        )}
       </ModalForm>
     </>
   );
