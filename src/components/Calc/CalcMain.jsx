@@ -156,7 +156,7 @@ function CalcMain() {
 
   const handleCopyAccount = async () => {
     if (!event?.account) {
-      alert("등록된 계좌번호가 없습니다.");
+      alert("카카오페이는 정산방에서 직접해주세요.");
       return;
     }
     try {
