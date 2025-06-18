@@ -154,6 +154,41 @@ function CalcMain() {
     }
   };
 
+  const removeReceipt = async () => {
+    if (!mustOwner("정산 삭제")) return;
+    if (!receiptList.length) return;
+
+    const lastIdx = receiptList.length;
+    const ok = window.confirm(`정말 ${lastIdx}차 정산 정보를 삭제할까요?`);
+    if (!ok) return;
+
+    const next = receiptList.slice(0, -1);
+    setReceiptList(next);
+
+    try {
+      await updateDoc(doc(db, "events", eventId), { receipts: next });
+    } catch (e) {
+      console.error(e);
+      alert("삭제 실패");
+    }
+  };
+
+  const removePerson = async (list, setList, field, name, label) => {
+    if (!mustOwner(`${label} 삭제`)) return;
+
+    if (!window.confirm(`'${name}'님을 ${label} 목록에서 삭제할까요?`)) return;
+
+    const next = list.filter((n) => n !== name);
+    setList(next);
+
+    try {
+      await updateDoc(doc(db, "events", eventId), { [field]: next });
+    } catch (e) {
+      console.error(e);
+      alert("삭제 실패");
+    }
+  };
+
   const handleCopyAccount = async () => {
     if (!event?.account) {
       alert("카카오페이는 정산방에서 직접해주세요.");
@@ -209,6 +244,17 @@ function CalcMain() {
     safeDay(val)?.format("YYYY년 M월 D일 (dd) A h:mm") ?? "날짜";
 
   const period = event.end ? `${fmt(event.start)}` : fmt(event.start);
+
+  const removeAttendee = (chaIdx, name) => {
+    if (!mustOwner("참석자 삭제")) return;
+
+    // 확인 다이얼로그
+    if (!window.confirm(`'${name}'님을 삭제하시겠습니까?`)) return;
+
+    // 마지막으로 남은 사람도 처리 가능
+    const next = chaList[chaIdx].attendees.filter((n) => n !== name);
+    updateChaAttendees(chaIdx, next);
+  };
 
   const updateChaAttendees = async (chaIndex, nextAttendees) => {
     setChaList((prev) =>
@@ -316,7 +362,25 @@ function CalcMain() {
             </p>
             <div className="person-list">
               {paidList.length ? (
-                paidList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+                paidList.map((n) => (
+                  <p
+                    key={n}
+                    className={`attendee-tag ${isOwner ? "clickable" : ""}`}
+                    onClick={() =>
+                      isOwner &&
+                      removePerson(
+                        paidList,
+                        setPaidList,
+                        "paid",
+                        n,
+                        "입금 완료자"
+                      )
+                    }
+                    title={isOwner ? "클릭 시 삭제" : ""}
+                  >
+                    {n}
+                  </p>
+                ))
               ) : (
                 <p>없음</p>
               )}
@@ -330,7 +394,25 @@ function CalcMain() {
             </p>
             <div className="person-list">
               {pendingList.length ? (
-                pendingList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+                pendingList.map((n) => (
+                  <p
+                    key={n}
+                    className={`attendee-tag ${isOwner ? "clickable" : ""}`}
+                    onClick={() =>
+                      isOwner &&
+                      removePerson(
+                        pendingList,
+                        setPendingList,
+                        "pending",
+                        n,
+                        "입금 미완료자"
+                      )
+                    }
+                    title={isOwner ? "클릭 시 삭제" : ""}
+                  >
+                    {n}
+                  </p>
+                ))
               ) : (
                 <p>없음</p>
               )}
@@ -344,7 +426,25 @@ function CalcMain() {
             </p>
             <div className="standBy-list">
               {standByList.length ? (
-                standByList.map((n, i) => <p key={`${n}-${i}`}>{n}</p>)
+                standByList.map((n) => (
+                  <p
+                    key={n}
+                    className={`attendee-tag ${isOwner ? "clickable" : ""}`}
+                    onClick={() =>
+                      isOwner &&
+                      removePerson(
+                        standByList,
+                        setStandByList,
+                        "standBy",
+                        n,
+                        "상보참"
+                      )
+                    }
+                    title={isOwner ? "클릭 시 삭제" : ""}
+                  >
+                    {n}
+                  </p>
+                ))
               ) : (
                 <p>없음</p>
               )}
@@ -398,7 +498,16 @@ function CalcMain() {
 
                 <div className="attendees">
                   {cha.attendees.length ? (
-                    cha.attendees.map((n, i) => <span key={i}>{n}</span>)
+                    cha.attendees.map((n, i) => (
+                      <span
+                        key={i}
+                        className={`attendee-tag ${isOwner ? "clickable" : ""}`}
+                        onClick={() => isOwner && removeAttendee(idx, n)}
+                        title={isOwner ? "클릭 시 삭제" : ""}
+                      >
+                        {n}
+                      </span>
+                    ))
                   ) : (
                     <span className="empty">참석자 없음</span>
                   )}
@@ -421,7 +530,7 @@ function CalcMain() {
             N차 정산 +
           </button>
           <button
-            onClick="#"
+            onClick={removeReceipt}
             disabled={!isOwner}
             title={isOwner ? "" : "벙주만 가능"}
           >
@@ -458,7 +567,18 @@ function CalcMain() {
                 <div className="attendance-row">
                   <div className="attendees">
                     {attendees.length ? (
-                      attendees.map((n, i) => <span key={i}>{n}</span>)
+                      attendees.map((n, i) => (
+                        <span
+                          key={i}
+                          className={`attendee-tag ${
+                            isOwner ? "clickable" : ""
+                          }`}
+                          onClick={() => isOwner && removeAttendee(idx, n)}
+                          title={isOwner ? "클릭 시 삭제" : ""}
+                        >
+                          {n}
+                        </span>
+                      ))
                     ) : (
                       <span className="empty">참석자 없음</span>
                     )}
