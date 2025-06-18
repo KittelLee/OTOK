@@ -8,3 +8,13 @@
   color: red;
   text-align: center;
 }
+
+.waiting {
+  background-color: #f6c344;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5;
+}

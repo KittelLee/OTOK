@@ -362,3 +362,27 @@
 .receipt-view-btn:hover {
   opacity: 0.85;
 }
+
+/* 모든 버튼 공통 – disabled 시 흐림 + 마우스 금지 */
+button:disabled,
+button[disabled] {
+  /* edge-case 대응 */
+  opacity: 0.35; /* 0.3~0.4 정도가 자연스럽습니다 */
+  cursor: not-allowed;
+  pointer-events: none; /* hover 효과까지 완전히 차단하려면 */
+}
+
+/* 플로팅 + 버튼(원형)은 별도 배경 컬러가 있어 투명도만으로 충분 */
+.add-attendee:disabled {
+  opacity: 0.35;
+}
+
+/* ‘입금 완료자 추가’ 등 노란색 버튼 */
+.cash-done button:disabled {
+  opacity: 0.35;
+}
+
+/* 이미 있으니 유지 – N차 참/정산 버튼 */
+.cha-plus button:disabled {
+  opacity: 0.4; /* 값이 달라도 OK, 통일하려면 0.35로 맞추세요 */
+}

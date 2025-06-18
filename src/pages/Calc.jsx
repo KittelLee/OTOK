@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
@@ -18,9 +18,9 @@ import UploadIcon from "../assets/icons/upload.svg";
 import "../styles/Calc.css";
 
 function Calc({ user }) {
-  // 모달 & 목록 state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
+  const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
 
   // 🔒 로그인된 뒤에만 구독
@@ -63,30 +63,33 @@ function Calc({ user }) {
     }
   };
 
+  /** 🔍 keyword가 있으면 제목(title)에 포함되는 데이터만 반환 */
+  const visibleEvents = useMemo(() => {
+    if (!keyword.trim()) return events; // 공백이면 전체 반환
+    return events.filter((ev) =>
+      (ev.title ?? "") // title 필드가 있다고 가정
+        .toLowerCase()
+        .includes(keyword.toLowerCase())
+    );
+  }, [events, keyword]);
+
   return (
     <>
       <section className="calc-wrap">
         <div className="calc-top">
-          <input type="text" placeholder="벙 이름으로 검색" />
+          <input
+            type="text"
+            placeholder="벙 이름으로 검색"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
           <button onClick={() => setIsModalOpen(true)}>
             <img src={UploadIcon} />
           </button>
         </div>
 
-        <div>
-          {events.map((ev, idx) => (
-            // <Link
-            //   key={ev.id}
-            //   to={`/calcMain/${ev.id}`}
-            //   style={{ textDecoration: "none", color: "inherit" }}
-            // >
-            //   <CalcCard
-            //     index={idx + 1}
-            //     event={ev}
-            //     onDelete={deleteEvent}
-            //     user={user}
-            //   />
-            // </Link>
+        <div className="calc-list">
+          {visibleEvents.map((ev, idx) => (
             <div
               key={ev.id}
               onClick={() => enterEvent(ev)}

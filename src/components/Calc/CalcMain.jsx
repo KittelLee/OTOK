@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
+import { db, auth } from "../../../firebaseConfig";
 import useToolTip from "../../hooks/useToolTip";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -44,6 +44,9 @@ function CalcMain() {
   const [photoURL, setPhotoURL] = useState(null);
   const { tipNode, bind } = useToolTip();
 
+  //내가 벙주인지 판별
+  const isOwner = auth.currentUser && event?.createdBy === auth.currentUser.uid;
+
   // 🔢 총 인원 = 세 리스트 길이 합
   const totalCount = new Set([...paidList, ...pendingList, ...standByList])
     .size;
@@ -58,7 +61,16 @@ function CalcMain() {
     setStandByList(Array.isArray(event.standBy) ? event.standBy : []);
   }, [event]);
 
+  const mustOwner = (actionName = "수정") => {
+    if (!isOwner) {
+      alert(`권한이 없습니다. (벙주만 ${actionName} 가능)`);
+      return false; // false → 호출부에서 return 용
+    }
+    return true;
+  };
+
   const appendPerson = async (list, setList, field, message) => {
+    if (!mustOwner("인원 추가")) return;
     const name = window.prompt(message);
     if (!name) return;
     if (list.includes(name)) return alert("이미 등록된 이름입니다.");
@@ -99,11 +111,13 @@ function CalcMain() {
     );
 
   const openAddChaModal = () => {
+    if (!mustOwner("N차참 추가")) return;
     if (chaList.length >= 7) return alert("최대 7차까지만 추가할 수 있습니다.");
     setShowAddChaModal(true);
   };
 
   const confirmAddCha = async (rawCha) => {
+    if (!mustOwner("N차참 추가")) return;
     const isoTime = rawCha.time
       ? dayjs(rawCha.time?.seconds ? rawCha.time.toDate() : rawCha.time)
           .tz("Asia/Seoul")
@@ -123,6 +137,7 @@ function CalcMain() {
   };
 
   const removeCha = async () => {
+    if (!mustOwner("N차참 삭제")) return;
     if (!chaList.length) return;
 
     const lastIdx = chaList.length;
@@ -214,6 +229,7 @@ function CalcMain() {
   };
 
   const addChaAttendee = (chaIdx) => {
+    if (!mustOwner("참석자 추가")) return;
     const cha = chaList[chaIdx];
     const name = window.prompt(`${chaIdx + 1}차참 참석자 이름을 입력하세요.`);
     if (!name) return;
@@ -229,6 +245,7 @@ function CalcMain() {
   const openReceiptModal = () => setShowReceiptModal(true);
 
   const confirmAddReceipt = async (newReceipt) => {
+    if (!mustOwner("정산 추가")) return;
     const next = [...receiptList, newReceipt];
     setReceiptList(next);
 
@@ -267,9 +284,27 @@ function CalcMain() {
               </div>
               <div className="bar" />
               <div className="cash-done">
-                <button onClick={addPaidPerson}>입금 완료자 추가</button>
-                <button onClick={addPendingPerson}>입금 미완료자 추가</button>
-                <button onClick={addStandByPerson}>상보참 추가</button>
+                <button
+                  onClick={addPaidPerson}
+                  disabled={!isOwner}
+                  title={isOwner ? "" : "벙주만 가능"}
+                >
+                  입금 완료자 추가
+                </button>
+                <button
+                  onClick={addPendingPerson}
+                  disabled={!isOwner}
+                  title={isOwner ? "" : "벙주만 가능"}
+                >
+                  입금 미완료자 추가
+                </button>
+                <button
+                  onClick={addStandByPerson}
+                  disabled={!isOwner}
+                  title={isOwner ? "" : "벙주만 가능"}
+                >
+                  상보참 추가
+                </button>
               </div>
             </div>
           </div>
@@ -317,8 +352,20 @@ function CalcMain() {
           </div>
 
           <div className="cha-plus">
-            <button onClick={openAddChaModal}>N차 참 +</button>
-            <button onClick={removeCha}>N차 참 -</button>
+            <button
+              onClick={openAddChaModal}
+              disabled={!isOwner}
+              title={isOwner ? "" : "벙주만 가능"}
+            >
+              N차 참 +
+            </button>
+            <button
+              onClick={removeCha}
+              disabled={!isOwner}
+              title={isOwner ? "" : "벙주만 가능"}
+            >
+              N차 참 -
+            </button>
           </div>
 
           {chaList.map((cha, idx) => (
@@ -343,7 +390,8 @@ function CalcMain() {
                 <button
                   className="add-attendee"
                   onClick={() => addChaAttendee(idx)}
-                  title="참석자 추가"
+                  disabled={!isOwner}
+                  title={isOwner ? "참석자 추가" : "벙주만 가능"}
                 >
                   +
                 </button>
@@ -365,8 +413,20 @@ function CalcMain() {
         <div className="calcHr" />
 
         <div className="cha-plus">
-          <button onClick={openReceiptModal}>N차 정산 +</button>
-          <button onClick="#">N차 정산 -</button>
+          <button
+            onClick={openReceiptModal}
+            disabled={!isOwner}
+            title={isOwner ? "" : "벙주만 가능"}
+          >
+            N차 정산 +
+          </button>
+          <button
+            onClick="#"
+            disabled={!isOwner}
+            title={isOwner ? "" : "벙주만 가능"}
+          >
+            N차 정산 -
+          </button>
         </div>
 
         <div className="calcMain-bottom">
