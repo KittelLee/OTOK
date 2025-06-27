@@ -22,9 +22,12 @@ service cloud.firestore {
     /* ---------- events 컬렉션 ---------- */
     match /events/{eventId} {
       /** ① 읽기 = 승인된 모든 사용자 */
-      allow read: if request.auth != null
-        && get(/databases/$(database)/documents/users/$(request.auth.uid))
-              .data.approved == true;
+      // allow read: if request.auth != null
+      //  && get(/databases/$(database)/documents/users/$(request.auth.uid))
+      //        .data.approved == true;
+
+      /* 로그인 여부와 무관하게 읽기 허용 */
+      allow read: if true;
 
       /** ② 생성 = 자신이 작성자로 들어가 있을 때만 (또는 관리자) */
       allow create: if request.auth != null

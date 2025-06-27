@@ -24,9 +24,21 @@ function Calc({ user }) {
   const navigate = useNavigate();
 
   // 🔒 로그인된 뒤에만 구독
-  useEffect(() => {
-    if (!auth.currentUser) return; // 로그인 전이면 패스
+  // useEffect(() => {
+  //   if (!auth.currentUser) return;
 
+  //   const unsub = onSnapshot(collection(db, "events"), (snap) => {
+  //     const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  //     list.sort(
+  //       (a, b) => (b.created?.seconds ?? 0) - (a.created?.seconds ?? 0)
+  //     );
+  //     setEvents(list);
+  //   });
+  //   return unsub;
+  // }, [auth.currentUser]);
+
+  // 로그인 여부와 무관하게 구독
+  useEffect(() => {
     const unsub = onSnapshot(collection(db, "events"), (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
       list.sort(
@@ -35,14 +47,15 @@ function Calc({ user }) {
       setEvents(list);
     });
     return unsub;
-  }, [auth.currentUser]);
+  }, []);
 
   // 자식(modal)에서 호출할 addEvent 콜백
   const addEvent = useCallback(async (ev) => {
     await addDoc(collection(db, "events"), {
       ...ev,
       created: serverTimestamp(),
-      createdBy: auth.currentUser.uid,
+      // createdBy: auth.currentUser.uid,
+      createdBy: auth.currentUser?.uid ?? null,
     });
     setIsModalOpen(false);
   }, []);
@@ -116,7 +129,8 @@ export default Calc;
 
 Calc.propTypes = {
   user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
+    // uid: PropTypes.string.isRequired,
+    uid: PropTypes.string,
     email: PropTypes.string,
     displayName: PropTypes.string,
   }),

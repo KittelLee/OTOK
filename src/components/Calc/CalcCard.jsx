@@ -92,6 +92,6 @@ CalcCard.propTypes = {
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-  }).isRequired,
+    uid: PropTypes.string,
+  }),
 };

@@ -88,9 +88,6 @@ function App() {
 
           if (!approved) {
             toast.info("관리자 승인 대기중입니다.");
-            // await auth.signOut();
-            // setUser(null);
-            // setAuthReady(true);
             navigate("/waiting", { replace: true });
           } else {
             setUser({
@@ -124,21 +121,27 @@ function App() {
             <Route path="/waiting" element={<Waiting />} />
             <Route path="/rule" element={<Rule />} />
             <Route path="/room" element={<Room />} />
-            <Route
+            {/* 정산방 로그인 로직 임시 해제*/}
+            {/* <Route
               path="/calc"
               element={
                 <ProtectedRoute user={user} ready={authReady}>
                   <Calc user={user} />
                 </ProtectedRoute>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/calcMain/:eventId"
               element={
                 <ProtectedRoute user={user} ready={authReady}>
                   <CalcMain user={user} />
                 </ProtectedRoute>
               }
+            /> */}
+            <Route path="/calc" element={<Calc user={user} />} />
+            <Route
+              path="/calcMain/:eventId"
+              element={<CalcMain user={user} />}
             />
             <Route
               path="/out"
