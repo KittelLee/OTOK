@@ -1,0 +1,58 @@
+:root {
+  --gray-200: #e9ecef;
+
+  --green: #2bc48a;
+  --yellow: #f5c04f;
+
+  --radius-sm: 6px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.out-wrap {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(../assets/imgs/deco.png);
+}
+
+.out-top {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.out-top button {
+  border: none;
+  border-radius: var(--radius-sm);
+  margin: 0 10px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.22);
+}
+
+.out-top button:first-child {
+  background-color: var(--green);
+  color: white;
+}
+
+.out-top button:last-child {
+  background-color: var(--yellow);
+  color: white;
+}
+
+.out-top button:hover {
+  opacity: 0.7;
+  color: black;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.out-top button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

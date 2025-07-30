@@ -55,6 +55,7 @@ function CalcCard({ index, event, onDelete, user }) {
             )}
           </div>
         </div>
+
         <div className="card-middle">
           <div className="card-date">
             <p className="date-text">{formatKoreanDateTime(start, end)}</p>
@@ -63,6 +64,7 @@ function CalcCard({ index, event, onDelete, user }) {
             <p>{place}</p>
           </div>
         </div>
+
         <div className="card-bottom">
           <div className="card-person">
             <p>

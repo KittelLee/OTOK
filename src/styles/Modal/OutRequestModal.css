@@ -1,0 +1,50 @@
+:root {
+  --brand-50: #fff7db;
+  --brand-100: #ffe8a0;
+}
+
+.outRequest-wrap {
+  background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+  border-radius: var(--radius-md);
+  padding: 14px 10px;
+  margin: 12px;
+  box-shadow: var(--shadow-md);
+  color: var(--gray-700);
+  line-height: 1.55;
+}
+
+.outRequest h1 {
+  text-align: center;
+}
+
+.outForm,
+.outForm label {
+  display: flex;
+  flex-direction: column;
+}
+
+.outForm textarea {
+  height: 100px;
+}
+
+.form-button {
+  margin: 8px 2px 4px 2px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-button button {
+  width: 100%;
+  height: 36px;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--brand-500);
+  color: #fff;
+  transition: opacity 0.15s;
+}
+
+.form-button button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
